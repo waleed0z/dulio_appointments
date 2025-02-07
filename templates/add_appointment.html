@@ -1,0 +1,115 @@
+<title>Add Appoinment</title>
+{% extends 'client_base.html' %}
+{% block active%}
+<ul>
+    <li>
+        <a href="{{ url_for('client_dashboard')}}" class="nav-link" data-content="dashboard"> 
+            <span><i class="fas fa-tachometer-alt"></i> </span>
+            <span>Dashboard</span> 
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('add_appointment') }}" class="active" data-content="clients">
+            <span><i class="fas fa-home"></i> </span>
+            <span>Add Appointment</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('logout') }}">
+            <span><i class="fas fa-sign-out-alt"></i></span>
+            <span>Logout</span>
+        </a>
+    </li>
+</ul>
+{% endblock active %}
+{% block content %}
+    <!--Appointment Section-->
+    <section class="appointment-section">
+        <div class="container">
+            <div class="sec-title">
+                <div class="title">Do You Want to Work</div>
+                  <h2>Appoinment</h2>
+              </div>
+              <div class="row clearfix">
+              
+                <!--Form Column-->
+                <div class="form-column col-md-8 col-sm-12 col-xs-12">
+                    <div class="inner-column">
+                        
+                          <!-- Default Form -->
+                          <div class="default-form">
+                                  
+                              <!--Contact Form-->
+                              <form method="POST" action="{{ url_for('add_appointment') }}">
+                                  <div class="row clearfix">
+                                  
+                                      <div class="column col-md-6 col-sm-6 col-xs-12">
+                                          
+                                          <div class="form-group">
+                                                <label class="lb" for="client_name">Name:</label>
+                                                <input type="text" name="client_name" placeholder="Full Name" required>
+                                          </div>
+                                          
+                                          <!--Form Group-->
+                                          <div class="form-group">
+                                            <label for="person_name">Staff:</label>
+                                            <select class="custom-select-box" name="person_name" required>
+                                                {% for user in staff_members %}
+                                                <option value="{{ user.username }}">{{ user.username }}</option>
+                                                {% endfor %}
+                                              </select>
+                                          </div>
+                                          
+                                          <div class="form-group">
+                                            <label for="appointment_date">Date:</label>
+                                            <input type="date" class="datepicker" name="appointment_date" placeholder="Schedule Date" required>
+                                          </div>
+                                          
+                                      </div>
+                                      
+                                      <div class="column col-md-6 col-sm-6 col-xs-12">
+                                          
+                                          <div class="form-group">
+                                            <label for="client_mail">Email:</label>
+                                            <input type="email" name="client_mail" placeholder="Email" required>
+                                          </div>
+                                          
+                                          <div class="form-group">
+                                            <label for="appointment_time">Time:</label>
+                                            <input class="timepicker" type="time" name="appointment_time" placeholder="Schedule Time">
+                                          </div>
+                                          
+                                      </div>
+                                  
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                          <button class="theme-btn appointment-btn" type="submit" name="submit-form">Fix An Appoinment</button>
+                                      </div>
+                                      
+                                  </div>
+                              </form>
+                                  
+                          </div>
+                          <!--End Default Form -->
+                          
+                      </div>
+                  </div>
+                  
+                  <!--Form Column-->
+                <div class="schedule-column col-md-4 col-sm-12 col-xs-12">
+                    <div class="inner-outer">
+                          <div class="inner-column">
+                              <h2>Business Hours:</h2>
+                              <ul class="time-list">
+                                  <li>Monday - Friday 9.00 AM - 5.00 PM</li>
+                                  <li>Saturday 9.00 AM - 3.00 PM</li>
+                                  <li><strong>Sunday Closed</strong></li>
+                                  <li class="closed">* Every 2nd, 4th Staurday and all govt holidays are closed.</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </section>
+{% endblock content%}

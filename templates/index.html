@@ -1,0 +1,252 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/* Start Global Rules */
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Poppins, "DM Sans", sans-serif;
+  height:100%;
+}
+a {
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Small */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+/* Medium */
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+/* Large */
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+/* End Global Rules */
+
+/* Start Landing Page */
+.landing-page header {
+  min-height: 80px;
+  display: flex;
+}
+@media (max-width: 767px) {
+  .landing-page header {
+    min-height: auto;
+    display: initial;
+  }
+}
+.landing-page header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 75px;
+  bottom: 100px;
+}
+@media (max-width: 767px) {
+  .landing-page header .container {
+    display:flex;
+    height:50px;
+  }
+}
+.landing-page header .logo {
+  color: #b5ac9c;
+  font-style: italic;
+  font-size: 40px;
+}
+@media (max-width: 767px) {
+  .landing-page header .logo {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+.landing-page header .links {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  .landing-page header .links {
+    text-align: center;
+    gap: 10px;
+  }
+}
+.landing-page header .links li {
+  margin-left: 10px;
+  color: #5d5d5d;
+  cursor: pointer;
+  transition: .3s;
+}
+@media (max-width: 767px) {
+  .landing-page header .links li {
+    margin-left: auto;
+  }
+}
+.landing-page header .links li a{
+  font-family: Poppins, sans-serif;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 30px;
+  cursor: pointer;
+  color: #5d5d5d;
+  background-color: #e6c2b4;
+}
+.landing-page header .links li a:hover {
+  color: black;
+}
+.landing-page .content .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 140px;
+  min-height: calc(100vh - 80px);
+}
+@media (max-width: 767px) {
+  .landing-page .content .container {
+    gap: 0;
+    min-height: calc(100vh - 101px);
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
+}
+@media (max-width: 767px) {
+  .landing-page .content .info {
+    text-align: center;
+    margin-bottom: 15px 
+  }
+}
+.landing-page .content .info h1 {
+  color: #5d5d5d;
+  font-size: 44px;
+}
+.landing-page .content .info p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #5d5d5d;
+}
+.landing-page .content .info button {
+  font-family: Poppins, sans-serif;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 30px;
+  margin-top: 30px;
+  cursor: pointer;
+  color: white;
+  background-color: #5d5d5d;
+}
+.landing-page .content .info button a {
+    text-decoration:none;
+    color:white
+}
+.landing-page .content .info button a:hover {
+  color: black;
+}
+.landing-page .content .image img {
+  max-width: 100%;
+  margin-top: 50px;
+  margin-bottom:50px;
+}
+#footer {
+  margin: -10px;
+  margin-top: 10px;
+  bottom: 2px;
+  background-color: whitesmoke;
+  background-size: 100%;
+}
+#footer h4{
+  padding-top: 20px;
+  text-align: center;
+
+  padding-bottom: 0px;
+  font-size: 80%;
+  font-weight: 100;
+}
+#footer ul {
+ 
+  height: 45px;
+  clear: both;
+  color: rgb(255, 255, 255);
+  padding-top: 20px;
+  padding-bottom: 0px;
+  font-size: 90%;
+  letter-spacing: 1px;
+  padding: 5px;
+  list-style-type: none;
+  text-align: center;
+
+}
+#footer ul li {
+  display: inline;
+}
+#footer ul li a {
+  text-decoration: none;
+  font-family: Poppins, "DM Sans", sans-serif;
+  font-size: 100%;
+  font-weight: 100;
+  padding: 0.2em 1em;
+  color: #5d5d5d;
+}
+#footer ul li a:hover {
+  color: #e6c2b4;
+}
+</style>
+<!-- Start Landing Page -->
+      <div class="landing-page">
+        <header>
+          <div class="container">
+            <a href="#" class="logo"><b>dulio</b></a>
+            <ul class="links">
+              <li><a href="{{ url_for('login') }}">log In</a></li>
+              <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+            </ul>
+          </div>
+        </header>
+        <div class="content">
+          <div class="container">
+            <div class="info">
+              <h1>Streamline Your Appointments with Ease</h1>
+              <p>Welcome to dulio, the ultimate solution for hassle-free appointment scheduling. Whether you're managing a busy practice, coordinating meetings, or organizing personal schedules, our intuitive platform lets you book, reschedule, and track appointments effortlessly. With user-friendly features and real-time updates, staying organized has never been easier. Join us today and take the stress out of scheduling!</p>
+              <button> <a href="{{ url_for('register') }}">Get Started</a></button>
+            </div>
+            <div class="image">
+              <img src="{{ url_for('static', filename='img/APPTMT.jpg') }}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <ul>
+            <li><a href="">HOME</a></li>
+            <li><a href="">JOIN US</a></li>
+            <li><a href="">GET INVOLVED</a></li>
+            <li><a href="">PARTNERS</a></li>
+          </ul>
+        <h4>&copy; 2022 Persona. All Rights Reserved.</h4>
+    </div>
+</html>
+    

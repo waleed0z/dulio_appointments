@@ -1,0 +1,533 @@
+/* General List Styles (Removed as likely unnecessary) */
+/* li, ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+} */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+html, body{
+  font-family: Poppins, "DM Sans", sans-serif;
+  background-color: white;
+}
+/* Section Title Styles */
+.sec-title {
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.sec-title .title {
+  position: relative;
+  color: #00b8ca;
+  font-size: 18px;
+  font-weight: 700;
+  padding-right: 50px;
+  margin-bottom: 15px;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.sec-title .title:before {
+  position: absolute;
+  content: '';
+  right: 0;
+  bottom: 7px;
+  width: 40px;
+  height: 1px;
+  background-color: #bbb;
+}
+
+.sec-title h2 {
+  position: relative;
+  color: #252525;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.5em;
+  display: block;
+}
+
+.sec-title.light h2 {
+  color: #fff;
+}
+
+/* Appointment Section Styles */
+.appointment-section {
+  display:flex;
+  position: relative;
+  padding: 110px 0 80px;
+  justify-content:center;
+}
+
+.appointment-section .form-column {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Default Form Styles */
+.default-form {
+  position: relative;
+}
+
+.default-form .form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.default-form .form-group i {
+  position: absolute;
+  right: 20px;
+  top: 18px;
+  color: #584528;
+  font-size: 12px;
+}
+
+.default-form .form-group input[type=text],
+.default-form .form-group input[type=tel],
+.default-form .form-group input[type=email],
+.default-form .form-group input[type=date],
+.default-form .form-group input[type=time],
+.default-form .form-group select {
+  position: relative;
+  display: block;
+  width: 100%;
+  line-height: 28px;
+  padding: 10px 20px;
+  color: #000;
+  height: 50px;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid #d7d7d7;
+  border-radius:10px;
+  transition: all 0.3s ease;
+}
+
+.default-form .form-group input[type=text]:focus,
+.default-form .form-group input[type=tel]:focus,
+.default-form .form-group input[type=email]:focus,
+.default-form .form-group textarea:focus {
+  border-color: #00b8ca;
+}
+
+.default-form .form-group textarea {
+  position: relative;
+  display: block;
+  width: 100%;
+  line-height: 22px;
+  padding: 15px 20px;
+  color: #797979;
+  height: 120px;
+  background: #fff;
+  resize: none;
+  font-size: 14px;
+  border: 1px solid #d7d7d7;
+  transition: all 0.3s ease;
+}
+
+.default-form .form-group .appointment-btn {
+  position: relative;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 11px 30px;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #dbb485;
+  border: 1px solid #dbb485;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.default-form .form-group .btn-detail {
+  position: relative;
+  color: #777;
+  font-size: 15px;
+  margin-left: 35px;
+  display: inline-block;
+}
+
+/* Appointment Section Schedule Column Styles */
+.appointment-section .schedule-column {
+  position: relative;
+
+}
+
+.appointment-section .schedule-column .inner-outer {
+  position: relative;
+  padding-left: 0px;
+  padding-bottom: 20px;
+}
+
+.appointment-section .schedule-column .inner-outer:before {
+  position: absolute;
+  content: '';
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: 268px;
+  background: url(https://i.ibb.co/gjZ1NFM/pattern-Appoinment.png) no-repeat;
+}
+
+.appointment-section .schedule-column .inner-column {
+  position: relative;
+  padding: 25px 30px;
+  border: 2px solid #00b8ca;
+  background-color: #fff;
+  width:100%;
+}
+
+.appointment-section .schedule-column h2 {
+  position: relative;
+  color: #252525;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4em;
+  margin-bottom: 15px;
+}
+
+.appointment-section .schedule-column .time-list {
+  position: relative;
+}
+
+.appointment-section .schedule-column .time-list li {
+  position: relative;
+  color: #777;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.appointment-section .schedule-column .time-list li:last-child {
+  margin-bottom: 0;
+}
+
+.appointment-section .schedule-column .time-list li strong {
+  color: #222;
+  font-weight: 700;
+}
+
+.appointment-section .schedule-column .time-list .closed {
+  position: relative;
+  color: #ff0000;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container h2 {
+  font-size: 1.5em;
+  font-weight: 100;
+  font-family: Poppins, 'DM Sans', sans-serif;
+}
+
+.container .appointment-control-container {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border: 1px solid #DDD;
+  color: #555;
+  padding: 1em;
+  border-radius: 3px;
+  background: white;
+  font-size: 0.8em;
+  font-family: Poppins, 'DM Sans', sans-serif;
+  position: relative;
+}
+
+.container .appointment-control-container .appointment-filter-container {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.container .appointment-control-container .appointment-filter-container label {
+  margin-right: 1em;
+}
+
+.container .appointment-control-container .appointment-filter-container select {
+  cursor: pointer;
+}
+
+.container .appointment-control-container button {
+  position: absolute;
+  right: 1em;
+  top: 10px;
+  font-family: Poppins, sans-serif;
+  padding: 2.5px 15px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #e6c2b4;
+  color: #5d5d5d;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.container .appointment-control-container button:hover {
+  border: 1px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.container .appointment-control-container button i {
+  margin-right: 0.6em;
+}
+
+.container i {
+  margin-right: 4px;
+  margin-left: 4px;
+  color: rgba(82, 87, 110, 1.0);
+}
+
+#divNoRecordsFound {
+  padding: 1em;
+  font-family: Poppins, sans-serif;
+  text-align: center;
+  font-size: 0.9em;
+  background: rgba(205, 209, 208, 0.1);
+  color: #5d5d5d;
+  display: none;
+}
+
+.scrollable-table {
+  position: relative;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 3px;
+  border: 1px solid rgba(85, 89, 108, 0.3);
+}
+
+.scrollable-table table {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.scrollable-table table td {
+  margin: 0;
+  padding: 0.3em;
+}
+
+.scrollable-table table:first-child td {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(85, 89, 108, 0.3);
+  padding: 0.8em;
+  cursor: pointer;
+}
+
+.scrollable-table table:last-child tbody tr {
+  transition: background-color 0.2s;
+}
+
+.scrollable-table table:last-child tbody td {
+  transition: border-color 0.25s ease-out;
+  font-size: 0.8em;
+  font-weight: 100;
+  height: 28px;
+}
+
+.scrollable-table table td:nth-child(1) {
+  width: 20%;
+}
+
+.scrollable-table table td:nth-child(2) {
+  width: 20%;
+}
+
+.scrollable-table table td:nth-child(3) {
+  width: 15%;
+}
+
+.scrollable-table table td:nth-child(4) {
+  width: 15%;
+}
+
+.scrollable-table table td:nth-child(5) {
+  width: 30%;
+}
+
+.scrollable-table table:last-child tbody tr:hover {
+  background: rgba(205, 209, 208, 0.1);
+  cursor: pointer;
+}
+
+.scrollable-table table:last-child tbody tr td:first-child {
+  border-left: 4px solid transparent;
+}
+
+.scrollable-table table:last-child tbody tr:hover td:first-child {
+  border-color: rgba(85, 89, 108, 0.4);
+}
+
+.scrollable-table table:last-child tbody tr.selected-row {
+  background-color: rgba(85, 89, 108, 0.1);
+}
+
+.scrollable-table table:last-child tbody tr.selected-row td:first-child {
+  border-color: #55596C;
+}
+
+.scrollable-table table:last-child tfoot tr {
+  border-top: 1px solid #EEE;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.scrollable-table table:last-child tfoot tr:hover {
+  background: rgba(205, 209, 208, 0);
+  cursor: default;
+}
+
+.scrollable-table table:last-child tfoot tr:hover td:first-child {
+  border-color: transparent;
+}
+
+.scrollable-table table:last-child tfoot td:last-child div {
+  margin-right: 2em;
+  font-size: 1.2em;
+}
+
+.scrollable-table table:last-child tfoot td:last-child div i {
+  cursor: pointer;
+}
+
+.scrollable-table table:last-child tfoot td:last-child div i[disabled] {
+  color: #DDD;
+}
+
+.scrollable-table table:last-child tfoot td:last-child div span {
+  font-size: 0.9em;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+}
+
+#btnCancelAppointment,
+#btnRescheduleAppointment {
+  font-family: Poppins, sans-serif;
+  padding: 5.5px 15px;
+  border: 0;
+  border-radius: 10px;
+  background-color: #e6c2b4;
+  color: #5d5d5d;
+}
+#btnCancelAppointment,
+#btnRescheduleAppointment span{
+  font-weight: 400;
+  
+}
+
+#btnCancelAppointment:hover,
+#btnRescheduleAppointment:hover {
+  border: 1px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+#btnCancelAppointment i,
+#btnRescheduleAppointment i {
+  margin-right: 0.6em;
+  margin-left: -0.1em;
+}
+
+#btnRescheduleAppointment {
+  margin-right: 0.9rem;
+}
+
+.appointment-details {
+  position: relative;
+  margin-top: 0.5rem;
+  background-color: white;
+  transition: box-shadow 0.25s;
+  border-radius: 3px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 200;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.appointment-details .appointment-title {
+  position: absolute;
+  left: 400px;
+  top: 14px;
+  font-size: 1em;
+}
+
+.appointment-details .appointment-actions {
+  display: inline;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+.appointment-details .appointment-content {
+  padding: 20px 20px 0;
+  border-radius: 0 0 2px 2px;
+  position: relative;
+}
+
+.appointment-details .appointment-content .appointment-data {
+  display: inline-block;
+}
+
+.appointment-details #secMapContainer {
+  overflow: hidden;
+  clear: both;
+}
+
+.appointment-details #secMapContainer iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  border-radius: 3px;
+  position: relative;
+  bottom: -4px;
+}
+
+#tableAppointmentDetails {
+  position: relative;
+  border: 2.5px solid #e6c2b4;
+  border-radius: 4px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  min-height: 76px;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tableAppointmentDetails tr span {
+  display: block;
+  color: #000;
+}
+
+#tableAppointmentDetails tr span:first-child {
+  font-size: 0.8em;
+  letter-spacing: 0.2em;
+  color: #777;
+  text-transform: uppercase;
+}
+
+#tableAppointmentDetails tr span:last-child {
+  font-family: Poppins, DM Sans, sans-serif;
+  font-size: 0.7em;
+  font-weight: 100;
+}
+
+#tableAppointmentDetails tr td {
+  padding-left: 12px;
+  padding-top: 0.6em;
+}
+
+#tableAppointmentDetails tr:first-child td:first-child {
+  background-color: rgba(209, 196, 233, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.09);
+  width: 110px;
+  text-align: center;
+  padding-left: 0;
+  padding-top: 0;
+}
+
+#tableAppointmentDetails tr:first-child td:first-child span {
+  color: #333;
+  font-size: 1em;
+  letter-spacing: 0;
+  font-weight: 200;
+  margin-top: 0.4em;
+}

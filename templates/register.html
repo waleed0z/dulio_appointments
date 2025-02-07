@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        body {
+            background-color: whitesmoke;
+            font-family: Poppins, sans-serif;
+            height: 100%;
+        }
+        
+        form {
+            font-family: Poppins, sans-serif;
+            height: 450px;
+            width: 400px;
+            background-color: rgb(255, 255, 255);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 255);
+            box-shadow: 0 0 10px rgba(8, 7, 16, 0.5);
+            padding: 45px 35px;
+        }
+        form * {
+            font-size: 12px;
+            font-weight: 200;
+            color: black;
+            letter-spacing: 0.5px;
+            outline: none;
+            border: none;
+            position: relative;
+            bottom: 10%;
+        }
+        form h1 {
+            font-size: 35px;
+            text-align: center;
+            font-weight: 300;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 200;
+        }
+        input, select {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 255);
+            border-radius: 5px;
+            border: 0.05px solid gray;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        ::placeholder {
+            color: gray;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #e6c2b4;
+            color: white;
+            padding: 10px 0;
+            font-weight: 500;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 2px solid #e6c2b4;
+            cursor: pointer;
+        }
+        button:hover{
+            color:black;
+        }
+        .login-link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .login-link a {
+            color: #1845ad;
+            text-decoration: underline;
+            font-weight: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <form method="POST" action="{{ url_for('register') }}">
+        <h1>Sign Up</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <label for="role">Role:</label>
+        <select name="role" required>
+            <option value="staff">Staff</option>
+            <option value="client">Client</option>
+        </select>
+        <button type="submit">Sign Up</button>
+        <div class="login-link">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        </div>
+    </form>
+</body>
+</html>

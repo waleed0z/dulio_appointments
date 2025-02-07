@@ -1,0 +1,99 @@
+{% extends 'client_base.html' %}
+{% block content %}
+
+        <table cellspacing="0" border="0" cellpadding="0" width="100%"
+            style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Poppins', sans-serif;">
+        <tr>
+        <td>
+        <table style= "max-width:650px; margin:0 auto;" width="100%" border="0"
+            align="center" cellpadding="0" cellspacing="0">
+        <tr>
+        <td style="height:80px;">&nbsp;</td>
+        </tr>
+            <!-- Logo -->
+        <tr>
+        <td style="text-align:center;">
+        </td>
+        </tr>
+        <tr>
+        <td style="height:20px;">&nbsp;</td>
+        </tr>
+            <!-- Email Content -->
+        <tr>
+        <td>
+        <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"                        style="max-width:670px; background:rgb(255, 255, 255); border-radius:3px;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);padding:0 40px;">
+        <tr>
+                <td style="height:40px;">&nbsp;</td>
+                </tr>
+                <!-- Title -->
+                <tr>
+                                     <td style="padding:0 15px; text-align:center;">
+                                <h1 style="color:grey; font-weight:400; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">Appointment Reminder</h1>
+                                <span style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; 
+                                width:100px;"></span>
+                            </td>
+                        </tr>
+                        <!-- Details Table -->
+                        <tr>
+                            <td>{% if appointments%}
+                                <table cellpadding="0" cellspacing="0"
+                                    style="width: 100%; border: 1px solid #000000">
+                                    {% for appointment in appointments %}
+                                    <tbody>
+                                        <tr>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #000000; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:gray">
+                                                Full Name:</td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;">
+                                                {{ appointment.client_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%; font-weight:500; color:gray">
+                                                Email:</td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;">
+                                                {{ appointment.client_mail }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;border-right: 1px solid #ededed; width: 35%; font-weight:500; color:gray">
+                                                Staff Name:</td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;">
+                                                {{ appointment.person_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="padding: 10px;  border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%;font-weight:500; color:gray">
+                                                Appointment Date:</td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;">
+                                                {{ appointment.appointment_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed; width: 35%;font-weight:500; color:gray">
+                                                Appointment Time:</td>
+                                            <td
+                                                style="padding: 10px; border-bottom: 1px solid #ededed;">
+                                                {{ appointment.appointment_time }}</td>
+                                        </tr>
+                                    </tbody>
+                                    {% endfor %}
+                         </table>{% else %}
+                                            <p>No appointments found.</p>
+                            </td>{% endif%}       
+                        </tr>
+                        <tr>
+                            <td style="height:40px;">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:20px;">&nbsp;</td>
+            </tr>
+        </table>
+{% endblock content %}

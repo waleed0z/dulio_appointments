@@ -1,0 +1,153 @@
+<title>Appointments</title>
+{% extends 'staff_base.html' %}
+{% block active %}
+<ul>
+    <li>
+        <a href="{{ url_for('staff_dashboard')}}" class="nav-link" data-content="dashboard"> 
+            <span><i class="fas fa-tachometer-alt"></i> </span>
+            <span>Dashboard</span> 
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('appointments')}}" class="active" data-content="clients">
+            <span><i class="fas fa-home"></i> </span>
+            <span>Clients</span>
+        </a>
+    </li>
+    <li>
+        <a href="#">
+            <span><i class="fa-solid fa-check"></i> </span>
+            <span>Available days</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('logout') }}">
+            <span><i class="fas fa-sign-out-alt"></i></span>
+            <span>Logout</span>
+        </a>
+    </li>
+</ul>
+{% endblock active %}
+{% block content %}
+<main>
+<div class="container">
+    <h2>Appointments</h2>
+
+    <div class="appointment-control-container">
+        <div class="appointment-filter-container">
+            <label for="selAppointmentFilter">Show</label>
+            <select id="selAppointmentFilter">
+                <option value="upcoming">Upcoming</option>
+                <option value="past3">Past 3 Months</option>
+                <option value="pastyear">Past Year</option>
+                <option value="past">All Past</option>
+            </select>
+        </div>
+        <button id="btnNewAppointment">
+            <i class="fa fa-calendar-plus-o"></i>
+            <span>Schedule Appointment</span>
+        </button>
+    </div>
+
+    <div id="divAppointmentContainer">
+        <div class="scrollable-table">
+            <table id="tableHeader">
+                <tbody>
+                    <tr>
+                        <td>Client <i class="fa fa-sort"></i></td>
+                        <td>Email <i class="fa fa-sort"></i></td>
+                        <td>Date <i class="fa fa-sort"></i></td>
+                        <td>Time <i class="fa fa-sort"></i></td>
+                        <td>Staff <i class="fa fa-sort"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="divNoRecordsFound">No appointments found</div>
+            <table id="tableAppointmentData" data-page="1">
+                <tbody>{% for appointment in appointments %}
+                    <tr data-date="{{ appointment.appointment_date }}" data-client="{{ appointment.client_name }}" data-time="{{ appointment.appointment_time }}" data-staff="{{ appointment.person_name }}" data-mail="{{ appointment.client_mail }}" data-note="Some potentially long note that no one will ever read.">
+                        <td>{{ appointment.client_name }}</td>
+                        <td>{{appointment.client_mail }}</td>
+                        <td>{{ appointment.appointment_date }}</td>
+                        <td>{{appointment.appointment_time }}</td>
+                        <td>Eastside Family medicine</td>
+                    </tr>
+                        {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <div>
+                                <i id="iPrevPage" class="fa fa-chevron-left" disabled></i>
+                                <span>
+                                    <span id="spanCurrentPage"></span>
+                                    <span>of</span>
+                                    <span id="spanTotalPages"></span>
+                                </span>
+                                <i id="iNextPage" class="fa fa-chevron-right"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="appointment-details">
+        <div id="divAppointmentContent" class="appointment-content">
+            <div id="divAppointmentDetailContainer">
+                <div class="appointment-data">
+                    <span>Appointment Details</span>
+                    <div class="appointment-actions">
+                        <button id="btnRescheduleAppointment">
+                            <i class="fa fa-calendar"></i>
+                            <span>Reschedule</span>
+                        </button>
+                        <button id="btnCancelAppointment">
+                            <i class="fa fa-calendar-times-o"></i>
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                </div>
+
+                <table id="tableAppointmentDetails">
+                    <tbody>
+                        <tr>
+                            <td rowspan="2">
+                                <span id="spanAppointmentDateDetails"></span>
+                            </td>
+                            <td>
+                                <span>Client</span>
+                                <span id="spanPatientNameDetails"></span>
+                            </td>
+                            <td>
+                                <span>Time</span>
+                                <span id="spanProviderNameDetails"></span>
+                            </td>
+                            <td>
+                                <span>Staff</span>
+                                <span id="spanAppointmentTypeDetails"></span>
+                            </td>
+                            <td>
+                                <span>Email</span>
+                                <span id="spanAppointmentOrgDetails"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <span>Note</span>
+                                <span id="spanAppointmentNoteDetails"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <section id="secMapContainer">
+                <iframe id="iframeMap"></iframe>
+            </section>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock content %}

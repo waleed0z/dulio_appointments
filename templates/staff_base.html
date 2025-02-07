@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    <!-- Sidebar -->
+    <section class="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <span><i class="fas fa-calendar-check"></i></span>
+                <span>dulio</span>
+            </h2>
+        </div>
+
+        <div class="sidebar-menu">
+            {% block active %}
+            <ul>
+                <li>
+                    <a href="#" class="active"> 
+                        <span><i class="fas fa-tachometer-alt"></i> </span>
+                        <span>Dashboard</span> 
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('appointments') }}">
+                        <span><i class="fa-solid fa-users"></i> </span>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span><i class="fa-solid fa-check"></i> </span>
+                        <span>Available days</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}">
+                        <span><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                
+                
+            </ul>
+            {% endblock %}
+        </div>
+    </section>
+    <!-- Sidebar End Here -->
+
+    <!-- Main Content -->
+    <div class="main-content">
+            <!-- Navbar Header -->
+            <header>
+
+                <div class="header-title">
+                    <h2>  
+                        <label for="nav-toggle">
+                          <i class="fas fa-bars"></i>
+                        </label>
+                        Dashboard 
+                    </h2>
+                </div>
+                
+                <div class="user-wrapper">
+                    <i class="fas fa-user"></i>
+                    <div>
+                        <h4>{{ admin_username }}</h4>
+                        <small>Staff</small>  
+                    </div>
+                    
+                </div>
+
+            </header>
+            {% block content %}
+
+            {% endblock %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+        
