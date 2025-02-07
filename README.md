@@ -17,3 +17,8 @@ git clone https://github.com/waleed0z/dulio_appointments.git
 pip install -r requirements.txt
 
 3. Sign up and start scheduling and viewing appointments!
+
+## Additional Features coming soon:
+
+1. **Avaialable days:** Staff can add the days they are available for clients to choose from.
+2. **Google calendar integration:** Clients can add the appointment to their google calendar.
