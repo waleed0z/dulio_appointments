@@ -8,7 +8,20 @@ from datetime import datetime
 from flask import flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from authlib.integrations.flask_client import OAuth
+from config import Config
 
+app.config.from_object(Config)
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id=app.config['GOOGLE_CLIENT_ID'],
+    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    api_base_url='https://www.googleapis.com/oauth2/v2/',
+    client_kwargs={'scope': 'openid profile email'}
+)
 
 
 
@@ -223,6 +236,25 @@ class WorkingHours(db.Model):
     def __repr__(self):
         return f"WorkingHours('{self.person_name}', '{self.day_of_week}', '{self.start_time}', '{self.end_time}')"
         
+@app.route('/google-login')
+def google_login():
+    return google.authorize_redirect(url_for('google_auth_callback', _external=True))
+
+@app.route('/auth/callback')
+def google_auth_callback():
+    token = google.authorize_access_token()
+    user_info = google.get('userinfo').json()
+
+    # Custom logic for merging Google users with existing database
+    # Example logic (modify as needed)
+    existing_user = find_user_by_email(user_info['email'])  # Custom DB function
+    if not existing_user:
+        create_new_user(user_info)  # Custom DB function for new user creation
+
+    session['user'] = user_info
+    return redirect('/staff_dashboard')
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
