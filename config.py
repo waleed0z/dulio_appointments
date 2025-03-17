@@ -1,7 +1,11 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class Config:
-    SECRET_KEY = 'Pioneering#1'  # Change this to a secure random string
-    GOOGLE_CLIENT_ID = '648890598820-9sm4dotejktecusu63h1krultc762d0i.apps.googleusercontent.com'
-    GOOGLE_CLIENT_SECRET = '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'
+    SECRET_KEY = os.getenv("SECRET_KEY")  # Change this to a secure random string
+    GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
     GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
