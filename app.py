@@ -10,6 +10,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 from authlib.integrations.flask_client import OAuth
 from config import Config
+from flask import session
 from dotenv import load_dotenv
 
 app.secret_key = ['SECRET_KEY']
@@ -17,8 +18,8 @@ app.config.from_object(Config)
 oauth = OAuth(app)
 google = oauth.register(
     name='google',
-    client_id=app.config['CLIENT_ID'],
-    client_secret=app.config['CLIENT_SECRET'],
+    client_id=app.config['GOOGLE_CLIENT_ID'],
+    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     access_token_url='https://accounts.google.com/o/oauth2/token',
     api_base_url='https://www.googleapis.com/oauth2/v2/',
