@@ -15,8 +15,8 @@ app.config.from_object(Config)
 oauth = OAuth(app)
 google = oauth.register(
     name='google',
-    client_id=app.config['GOOGLE_CLIENT_ID'],
-    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
+    client_id=app.config['CLIENT_ID'],
+    client_secret=app.config['C_S'],
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     access_token_url='https://accounts.google.com/o/oauth2/token',
     api_base_url='https://www.googleapis.com/oauth2/v2/',
