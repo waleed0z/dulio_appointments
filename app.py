@@ -12,7 +12,7 @@ from authlib.integrations.flask_client import OAuth
 from config import Config
 from dotenv import load_dotenv
 
-app.secret_key = ["SECRET_KEY"]
+app.secret_key = ['SECRET_KEY']
 app.config.from_object(Config)
 oauth = OAuth(app)
 google = oauth.register(
@@ -30,7 +30,7 @@ google = oauth.register(
 # Configuring SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = ["SECRET_KEY"]
+app.config['SECRET_KEY'] = 'Pioneering#1'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
