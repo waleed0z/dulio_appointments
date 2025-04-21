@@ -12,21 +12,16 @@ from authlib.integrations.flask_client import OAuth
 from config import Config
 from flask import session
 from dotenv import load_dotenv
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+import uuid
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-app.secret_key = ['SECRET_KEY']
-app.config.from_object(Config)
-oauth = OAuth(app)
-google = oauth.register(
-    name='google',
-    client_id=app.config['GOOGLE_CLIENT_ID'],
-    client_secret=app.config['GOOGLE_CLIENT_SECRET'],
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    api_base_url='https://www.googleapis.com/oauth2/v2/',
-    client_kwargs={'scope': 'openid profile email'}
-)
-
-
+GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 # Configuring SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
@@ -36,15 +31,43 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+app.config.from_object(Config)
+oauth = OAuth(app)
+
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    role = db.Column(db.String(10), nullable=False)  # 'staff' or 'client'
+    password = db.Column(db.String(100))
+    role = db.Column(db.String(10), nullable=False, default='pending')  # Default role
+    google_id = db.Column(db.String(100), unique=True)
+    name = db.Column(db.String(100), unique=True) # 'staff' or 'client'
     
     def __repr__(self):
         return f"User('{self.username}', '{self.role}')"
 
+@app.before_request
+def check_role_required():
+    if current_user.is_authenticated and current_user.role == 'pending':
+        if request.endpoint not in ['select_role', 'logout', 'static']:
+            return redirect(url_for('select_role'))
+
+@app.route('/select_role', methods=['GET', 'POST'])
+@login_required
+def select_role():
+    if current_user.role != 'pending':
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        role = request.form.get('role')
+        if role in ['staff', 'client']:
+            current_user.role = role
+            db.session.commit()
+            return redirect(url_for('staff_dashboard' if current_user.role == 'staff' else 'client_dashboard'))
+        flash('Invalid role selection')
+
+    return render_template('select_role.html')
 
 
 @login_manager.user_loader
@@ -55,31 +78,111 @@ def load_user(user_id):
 def register():
     if request.method == 'POST':
         username = request.form['username']
-        password = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
-        role = request.form['role']
-
-        # Check if username already exists
+        password = generate_password_hash(request.form['password'])
+        
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            flash("Username already exists. Please choose a different one.")
+            flash("Username already exists")
             return redirect(url_for('register'))
 
-        # Create the new user and add to the database
-        new_user = User(username=username, password=password, role=role)
+        new_user = User(username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
 
-        # Log the user in right after registration
         login_user(new_user)
-
-        # Redirect based on the user's role
-        if new_user.role == 'staff':
-            return redirect(url_for('staff_dashboard'))
-        else:
-            return redirect(url_for('client_dashboard'))
+        return redirect(url_for('select_role'))
 
     return render_template('register.html')
 
+# Google OAuth Routes
+@app.route('/google-login')
+def google_login():
+    state = str(uuid.uuid4())
+    session['state'] = state 
+    # Generate Google OAuth URL
+    google_auth_url = (
+        "https://accounts.google.com/o/oauth2/v2/auth?"
+        "scope=email%20profile&"
+        f"access_type=offline&"
+        f"prompt=consent&"
+        f"include_granted_scopes=true&"
+        f"response_type=code&"
+        f"state=security_token%3D138r5719ru3e1%26url%3D{url_for('google_callback', _external=True)}&"
+        f"redirect_uri={REDIRECT_URI}&"
+        f"client_id={GOOGLE_CLIENT_ID}"
+    )
+    return redirect(google_auth_url)
+
+@app.route('/google-login/callback')
+def google_callback():
+    auth_code = request.args.get('code')
+
+    if not auth_code:
+        return "Authorization failed. No auth code received.", 400
+
+    # Exchange auth code for tokens
+    token_url = "https://oauth2.googleapis.com/token"
+    token_data = {
+        'code': auth_code,
+        'client_id': GOOGLE_CLIENT_ID,
+        'client_secret': GOOGLE_CLIENT_SECRET,
+        'redirect_uri': REDIRECT_URI,
+        'grant_type': 'authorization_code'
+    }
+
+    try:
+        import requests
+        token_response = requests.post(token_url, data=token_data)
+        token_json = token_response.json()
+
+        if 'id_token' not in token_json:
+            return "Failed to get ID token.", 400
+
+        # Verify ID token
+        idinfo = id_token.verify_oauth2_token(
+            token_json['id_token'],
+            google_requests.Request(),
+            GOOGLE_CLIENT_ID
+        )
+
+        # Check that the token is valid for this app
+        if idinfo['aud'] != GOOGLE_CLIENT_ID:
+            raise ValueError('Could not verify audience.')
+        
+        user_info = {
+            'sub': idinfo['sub'],
+            'name': idinfo['name']
+        }
+
+        # First try to find by google_id
+        user = User.query.filter_by(google_id=user_info['sub']).first()
+
+        # If still no user, auto‑create
+        if not user:
+            user = User(
+                username=user_info['name'],
+                google_id=user_info['sub'],
+                role='pending',
+                name=user_info['name']
+            )
+            db.session.add(user)
+            db.session.commit()
+
+        # If they existed locally, update their google_id now:
+        elif user.google_id is None:
+            user.google_id = user_info['sub']
+            db.session.commit()
+
+        login_user(user)
+        if user.role == 'pending':
+            return redirect(url_for('select_role'))
+
+        return redirect(url_for('staff_dashboard' if user.role == 'staff' else 'client_dashboard'))
+
+    except Exception as e:
+        return f"Authentication failed: {str(e)}", 400
+
+# Updated Login Route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -89,19 +192,15 @@ def login():
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-            if user.role == 'staff':
-                return redirect(url_for('staff_dashboard'))
-            else:
-                return redirect(url_for('client_dashboard'))
-        flash('Invalid username or password.')
+            if user.role == 'pending':
+                return redirect(url_for('select_role'))
+            return redirect(url_for('staff_dashboard' if user.role == 'staff' else 'client_dashboard'))
+        flash('Invalid credentials')
     return render_template('login.html')
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
 
+
+# Updated Dashboard Routes
 @app.route('/staff_dashboard')
 @login_required
 def staff_dashboard():
@@ -118,12 +217,7 @@ def staff_dashboard():
     staff_counts = get_staff_appointments_count()
     return render_template('staff_dashboard.html', appointments=appointments, admin_username=admin_username, current_date=current_date, message=message)
 
-@app.route('/appointments')
-@login_required
-def appointments():
-    admin_username = current_user.username
-    appointments = Appointment.query.filter_by(person_name=current_user.username).all()
-    return render_template('appointments.html', appointments=appointments, admin_username=admin_username)
+
 
 def get_staff_appointments_count():
     # Query to count appointments for each staff by their username
@@ -137,6 +231,15 @@ def get_staff_appointments_count():
     staff_counts = {person_name: count for person_name, count in results}
     
     return staff_counts
+
+@app.route('/appointments')
+@login_required
+def appointments():
+    admin_username = current_user.username
+    appointments = Appointment.query.filter_by(person_name=current_user.username).all()
+    return render_template('appointments.html', appointments=appointments, admin_username=admin_username)
+
+
 
 
 @app.route('/client_dashboard')
@@ -191,6 +294,13 @@ def add_appointment():
     
     return render_template('add_appointment.html', staff_members=staff_members, client_username=client_username)
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
 def is_available(person_name, appointment_date, appointment_time):
     # Check for any existing appointment with the same staff, date, and time
     overlapping_appointment = Appointment.query.filter_by(
@@ -238,29 +348,10 @@ class WorkingHours(db.Model):
 
     def __repr__(self):
         return f"WorkingHours('{self.person_name}', '{self.day_of_week}', '{self.start_time}', '{self.end_time}')"
-        
-@app.route('/google-login')
-def google_login():
-    return google.authorize_redirect(url_for('google_auth_callback', _external=True))
-
-@app.route('/auth/callback')
-def google_auth_callback():
-    token = google.authorize_access_token()
-    user_info = google.get('userinfo').json()
-
-    # Custom logic for merging Google users with existing database
-    # Example logic (modify as needed)
-    existing_user = find_user_by_email(user_info['email'])  # Custom DB function
-    if not existing_user:
-        create_new_user(user_info)  # Custom DB function for new user creation
-
-    session['user'] = user_info
-    return redirect('/staff_dashboard')
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
-
 

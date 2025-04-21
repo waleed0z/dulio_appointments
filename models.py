@@ -7,10 +7,16 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)  # Primary key column
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    role = db.Column(db.String(10), nullable=False)  # 'staff' or 'client'
+    role = db.Column(db.String(10), nullable=False, default="unassigned")  # 'staff' or 'client'
 
     def __repr__(self):
         return f"User('{self.username}', '{self.role}')"
+
+class GoogleUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    google_id = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
