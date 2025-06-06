@@ -6,6 +6,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styling.css') }}">
+    <style>
+        /* Basic styling for flash messages - Add this or integrate into your CSS file */
+        .flash-messages-container {
+            padding: 0 20px; /* Add some padding if messages are inside main-content */
+            margin-bottom: 15px;
+        }
+        .flash-messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .flash-messages li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .flash-messages .success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .flash-messages .error, .flash-messages .danger { /* 'danger' is a common Bootstrap category */
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .flash-messages .warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .flash-messages .info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+    </style>
 </head>
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -69,6 +108,20 @@
                 </div>
 
             </header>
+
+            <div class="flash-messages-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <ul class="flash-messages">
+                    {% for category, message in messages %}
+                      <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+            </div>
+            <!-- End Flash Messages Display Area -->
+
 {% block content %}
 
 {% endblock content %}

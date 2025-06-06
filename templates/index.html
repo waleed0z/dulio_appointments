@@ -115,6 +115,19 @@ ul {
   color: #5d5d5d;
   background-color: #e6c2b4;
 }
+
+.landing-page header .links li a.login{
+  font-family: Poppins, sans-serif;
+  border: 0;
+  border-radius: 10px;
+  padding: 5px 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 30px;
+  cursor: pointer;
+  color: #5d5d5d;
+  background-color: white; 
+}
 .landing-page header .links li a:hover {
   color: black;
 }
@@ -221,7 +234,7 @@ ul {
           <div class="container">
             <a href="#" class="logo"><b>dulio</b></a>
             <ul class="links">
-              <li><a href="{{ url_for('login') }}">log In</a></li>
+              <li><a href="{{ url_for('login') }}"  class="login">log In</a></li>
               <li><a href="{{ url_for('register') }}">Sign Up</a></li>
             </ul>
           </div>

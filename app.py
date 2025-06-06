@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datetime import date
+from datetime import date, timedelta, timezone
+from calendar_utils import check_freebusy # Import your updated function
 app = Flask(__name__)
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +16,8 @@ from dotenv import load_dotenv
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 import uuid
+import requests
+from urllib.parse import quote_plus
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,7 +25,13 @@ load_dotenv()
 GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = os.getenv("REDIRECT_URI")
+calendar_redirect_uri = "https://5000-cs-844002465568-default.cs-europe-west1-xedi.cloudshell.dev/link-google-calendar/callback"
 
+
+GOOGLE_CALENDAR_SCOPES = [
+    "https://www.googleapis.com/auth/calendar.readonly", # To check free/busy
+    "https://www.googleapis.com/auth/calendar.events"   # To create events
+]
 # Configuring SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///appointments.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -43,7 +52,10 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String(10), nullable=False, default='pending')  # Default role
     google_id = db.Column(db.String(100), unique=True)
     name = db.Column(db.String(100), unique=True) # 'staff' or 'client'
-    
+    access_token = db.Column(db.String(1024), nullable=True)
+    refresh_token = db.Column(db.String(1024), nullable=True)
+    calendar_linked = db.Column(db.Boolean, default=False, nullable=False)
+
     def __repr__(self):
         return f"User('{self.username}', '{self.role}')"
 
@@ -134,7 +146,6 @@ def google_callback():
         import requests
         token_response = requests.post(token_url, data=token_data)
         token_json = token_response.json()
-
         if 'id_token' not in token_json:
             return "Failed to get ID token.", 400
 
@@ -197,6 +208,96 @@ def login():
             return redirect(url_for('staff_dashboard' if user.role == 'staff' else 'client_dashboard'))
         flash('Invalid credentials')
     return render_template('login.html')
+
+@app.route('/link-google-calendar')
+@login_required
+def link_google_calendar():
+    if current_user.role != 'staff':
+        flash("Only staff members can link their Google Calendar.", "warning")
+        return redirect(url_for('index'))
+
+    # if current_user.calendar_linked:
+    #     flash("Your Google Calendar is already linked.", "info")
+    #     return redirect(url_for('staff_dashboard'))
+
+    state = str(uuid.uuid4())
+    session['calendar_oauth_state'] = state
+
+    scopes_string = " ".join(Config.GOOGLE_CALENDAR_SCOPES)
+
+    # Ensure your REDIRECT_URI for calendar linking is registered in Google Cloud Console
+    # It can be the same as the main login redirect URI if handled distinctly by path or params
+    calendar_redirect_uri = url_for('link_google_calendar_callback', _external=True)
+
+    google_auth_url = (
+        "https://accounts.google.com/o/oauth2/v2/auth?"
+        f"scope={quote_plus(scopes_string)}&"
+        f"access_type=offline&"  # Crucial for getting a refresh token
+        f"prompt=consent&"  # Ensures user is re-prompted, good for linking a specific service
+        f"include_granted_scopes=true&"
+        f"response_type=code&"
+        f"state={state}&"
+        f"redirect_uri={quote_plus(calendar_redirect_uri)}&"
+        f"client_id={Config.GOOGLE_CLIENT_ID}"
+    )
+    return redirect(google_auth_url)
+
+@app.route('/link-google-calendar/callback')
+@login_required
+def link_google_calendar_callback():
+    if current_user.role != 'staff':
+        flash("Authorization error: Insufficient role.", "danger")
+        return redirect(url_for('index'))
+
+    retrieved_state = request.args.get('state')
+    expected_state = session.pop('calendar_oauth_state', None)
+    if not retrieved_state or retrieved_state != expected_state:
+        flash("Invalid state parameter. CSRF check failed or session expired.", "danger")
+        return redirect(url_for('staff_dashboard'))
+
+    auth_code = request.args.get('code')
+    if not auth_code:
+        flash("Authorization failed. No authorization code received from Google.", "danger")
+        return redirect(url_for('staff_dashboard'))
+
+    token_url = "https://oauth2.googleapis.com/token"
+    calendar_redirect_uri = url_for('link_google_calendar_callback', _external=True)
+    token_data = {
+        'code': auth_code,
+        'client_id': Config.GOOGLE_CLIENT_ID,
+        'client_secret': Config.GOOGLE_CLIENT_SECRET,
+        'redirect_uri': calendar_redirect_uri,
+        'grant_type': 'authorization_code'
+    }
+
+    try:
+        token_response = requests.post(token_url, data=token_data)
+        token_response.raise_for_status()  # Raises HTTPError for bad responses (4XX or 5XX)
+        token_json = token_response.json()
+
+        if 'access_token' not in token_json:
+            flash("Failed to obtain access token from Google for calendar.", "danger")
+            return redirect(url_for('staff_dashboard'))
+
+        current_user.access_token = token_json['access_token']
+        if 'refresh_token' in token_json: # Refresh token is usually only sent the first time
+            current_user.refresh_token = token_json['refresh_token']
+        
+        current_user.calendar_linked = True
+        db.session.commit()
+
+        flash("Google Calendar linked successfully!", "success")
+    except requests.exceptions.HTTPError as e:
+        error_details = "No details"
+        try:
+            error_details = e.response.json().get('error_description', 'No details')
+        except: # In case response is not JSON or key missing
+            pass
+        flash(f"Failed to exchange token for calendar: {str(e)} - Details: {error_details}", "danger")
+    except Exception as e:
+        flash(f"An error occurred during Google Calendar linking: {str(e)}", "danger")
+    
+    return redirect(url_for('staff_dashboard'))
 
 
 
@@ -301,31 +402,77 @@ def logout():
     return redirect(url_for('index'))
 
 
-def is_available(person_name, appointment_date, appointment_time):
-    # Check for any existing appointment with the same staff, date, and time
-    overlapping_appointment = Appointment.query.filter_by(
-        person_name=person_name,
-        appointment_date=appointment_date,
-        appointment_time=appointment_time
+def is_available(person_name, appointment_date_str, appointment_time_str):
+    # Check 1: Local database for existing appointments for this staff at this time
+    overlapping_appointment_local = Appointment.query.filter_by(
+        person_name=person_name, # This should be the staff's username
+        appointment_date=appointment_date_str,
+        appointment_time=appointment_time_str
     ).first()
 
-    return overlapping_appointment is None
+    if overlapping_appointment_local:
+        flash(f"Slot at {appointment_time_str} on {appointment_date_str} is already booked (local check).", "warning")
+        return False
 
+    # Check 2: Google Calendar if staff has linked it
+    staff_user = User.query.filter_by(username=person_name).first()
 
+    if staff_user and staff_user.calendar_linked and staff_user.access_token:
+        try:
+            # Parse date and time strings. Assume they are in local time.
+            # For Google Calendar, we need to convert them to UTC.
+            year, month, day = map(int, appointment_date_str.split('-'))
+            hour, minute = map(int, appointment_time_str.split(':'))
+            
+            # Create a naive datetime object representing local time
+            appointment_datetime_start_local_naive = datetime(year, month, day, hour, minute)
+            
+            # Define appointment duration (e.g., 1 hour)
+            # This should ideally be configurable or based on service type
+            appointment_duration = timedelta(hours=1) 
+            appointment_datetime_end_local_naive = appointment_datetime_start_local_naive + appointment_duration
 
+            # Convert naive local times to aware UTC times.
+            # This assumes the naive datetime is in the system's local timezone.
+            # For more robust multi-timezone apps, consider using pytz and storing user timezones.
+            # If your server runs in UTC and inputs are also UTC, this conversion might differ.
+            
+            # Create timezone-aware local datetime (assuming system's timezone)
+            # This step is crucial if your system's timezone is not UTC.
+            # If you are sure appointment_datetime_start_local_naive is already UTC, you can skip tz conversion.
+            # For simplicity, let's assume the naive datetime needs to be treated as local and converted to UTC.
+            # If your app consistently works with UTC, then the form should submit UTC or be converted earlier.
+            
+            # Let's assume the naive datetime from form IS ALREADY UTC for simplicity here.
+            # If it's local, you'd do:
+            # local_tz = datetime.now().astimezone().tzinfo # Get local system timezone
+            # appointment_datetime_start_aware_local = appointment_datetime_start_local_naive.replace(tzinfo=local_tz)
+            # appointment_datetime_start_utc = appointment_datetime_start_aware_local.astimezone(timezone.utc)
+            # appointment_datetime_end_utc = (appointment_datetime_start_aware_local + appointment_duration).astimezone(timezone.utc)
+            # For check_freebusy, we need naive UTC datetimes:
+            # time_min_utc_naive = appointment_datetime_start_utc.replace(tzinfo=None)
+            # time_max_utc_naive = appointment_datetime_end_utc.replace(tzinfo=None)
 
+            # Simpler: Assume form inputs are directly translatable to UTC naive for the check
+            time_min_utc_naive = appointment_datetime_start_local_naive # if this represents UTC
+            time_max_utc_naive = appointment_datetime_end_local_naive   # if this represents UTC
 
-def is_within_working_hours(person_name, appointment_date, appointment_time):
-    day_of_week = datetime.strptime(appointment_date, '%Y-%m-%d').strftime('%A')
-    working_hours = WorkingHours.query.filter_by(person_name=person_name, day_of_week=day_of_week).first()
-    
-    if working_hours:
-        appointment_time = datetime.strptime(appointment_time, '%H:%M').time()
-        start_time = datetime.strptime(working_hours.start_time, '%H:%M').time()
-        end_time = datetime.strptime(working_hours.end_time, '%H:%M').time()
+            busy_slots = check_freebusy(staff_user, time_min_utc_naive, time_max_utc_naive, db.session)
+            
+            if busy_slots: # check_freebusy returns a list of busy intervals
+                flash(f"Staff member {person_name} is busy according to their Google Calendar at this time.", "warning")
+                return False # Staff is busy according to Google Calendar
 
-        return start_time <= appointment_time <= end_time
-    return False
+        except ValueError: # Catch errors from date/time parsing
+            flash("Invalid date or time format provided for Google Calendar check.", "danger")
+            return False # Treat as unavailable if parsing fails
+        except Exception as e:
+            print(f"Error checking Google Calendar for {person_name}: {e}") # Log the error
+            flash(f"Could not verify availability with Google Calendar due to an error. Please try again or contact support.", "danger")
+            return False # Safer to assume not available if GCal check fails
+            
+    # If all checks pass (local DB is free, and if GCal is linked, it's also free)
+    return True
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -336,6 +483,8 @@ class Appointment(db.Model):
     appointment_time = db.Column(db.String(5), nullable=False)
     person_name = db.Column(db.String(100), nullable=False)  # Staff member
     
+    client = db.relationship('User', backref=db.backref('appointments_as_client', lazy=True))
+
     def __repr__(self):
         return f"Appointment('{self.client_name}', '{self.client_mail}', '{self.appointment_date}', '{self.appointment_time}', '{self.person_name}')"
 

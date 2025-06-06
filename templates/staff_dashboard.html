@@ -11,11 +11,31 @@
                                 <h1>No appointments found.</h1>
                             {% endif %}                            
                         </div>
-                    
+          
             <p class="time">{{ current_date }}</p>
                 </div>
                   </div>
-                
+                  <hr>
+
+                  <h4>Google Calendar Integration</h4>
+                  {% if current_user.calendar_linked %}
+                      <p class="text-success">
+                          <i class="fas fa-check-circle"></i> Your Google Calendar is linked.
+                          Your availability will be checked automatically when clients book appointments.
+                      </p>
+                      <p><a href="{{ url_for('link_google_calendar') }}" class="btn btn-sm btn-outline-secondary">Re-link or Change Account</a></p>
+                  {% else %}
+                      <p class="text-warning">
+                          <i class="fas fa-exclamation-triangle"></i> Your Google Calendar is not linked.
+                      </p>
+                      <p>Link your Google Calendar to allow the system to automatically check your availability and prevent double bookings.</p>
+                      <a href="{{ url_for('link_google_calendar') }}" class="btn btn-primary">
+                          <i class="fab fa-google"></i> Link Google Calendar
+                      </a>
+                  {% endif %}
+              
+                  <hr>
+                      
                 <div class="project-boxes jsGridView">
                 {% for appointment in appointments %}  
                   <div class="project-box-wrapper">
