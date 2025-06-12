@@ -1,0 +1,111 @@
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: Poppins, sans-serif;
+        background: #f7f8fa;
+        margin: 0;
+        padding: 0;
+    }
+    h2 {
+        text-align: center;
+        margin-top: 2rem;
+        color: #222;
+        font-weight: 300;
+    }
+    form {
+        max-width: 420px;
+        margin: 2.5rem auto;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        padding: 2.5rem 2rem 2rem 2rem;
+    }
+    .role-selection {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    .role-selection label {
+        cursor: pointer;
+        flex: 1 1 0;
+        transition: transform 0.12s;
+        border-radius: 10px;
+    }
+    .role-selection input[type="radio"] {
+        display: none;
+    }
+    .role-card {
+        background: #f3f6fa;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        min-width: 120px;
+    }
+    .role-selection input[type="radio"]:checked + .role-card {
+        border-color: #e1c55649;
+        box-shadow: 0 2px 12px rgba(59,130,246,0.08);
+        background: #e8f0fe;
+    }
+    .role-card h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        color: #1e293b;
+        font-weight: 300;
+    }
+    .role-card p {
+        margin: 0;
+        color: #64748ba7;
+        font-size: 0.97rem;
+    }
+    button[type="submit"] {
+        width: 100%;
+        padding: 0.85rem 0;
+        background: linear-gradient(90deg, #a47e494e 0%, #ffab3688 100%);
+        color:#222;;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 300;
+        cursor: pointer;
+        transition: background 0.18s;
+        box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+        margin-top: 0.5rem;
+    }
+    button[type="submit"]:hover {
+        color:#fff;
+    }
+    @media (max-width: 600px) {
+        form {
+            padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+        }
+        .role-selection {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+<h2>Select Your Role</h2>
+<form method="POST">
+    <div class="role-selection">
+        <label>
+            <input type="radio" name="role" value="staff" required>
+            <div class="role-card">
+                <h3>Staff</h3>
+                <p>I work here and manage appointments</p>
+            </div>
+        </label>
+        <label>
+            <input type="radio" name="role" value="client" required>
+            <div class="role-card">
+                <h3>Client</h3>
+                <p>I want to book appointments</p>
+            </div>
+        </label>
+    </div>
+    <button type="submit">Continue</button>
+</form>
+{% endblock %}

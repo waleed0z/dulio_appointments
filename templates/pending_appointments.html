@@ -1,0 +1,36 @@
+{% extends 'client_base.html' %}
+{% block content %}
+<h2>Your Appointments</h2>
+<table>
+    <tr>
+        <th>Staff</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Reason</th>
+    </tr>
+    {% for appointment in appointments %}
+    <tr>
+        <td>{{ appointment.person_name }}</td>
+        <td>{{ appointment.appointment_date }}</td>
+        <td>{{ appointment.appointment_time }}</td>
+        <td>
+            {% if appointment.status == 'pending' %}
+                <span class="badge badge-secondary">Pending</span>
+            {% elif appointment.status == 'accepted' %}
+                <span class="badge badge-success">Accepted</span>
+            {% elif appointment.status == 'rescheduled' %}
+                <span class="badge badge-warning">Rescheduled</span>
+            {% elif appointment.status == 'canceled' %}
+                <span class="badge badge-danger">Canceled</span>
+            {% endif %}
+        </td>
+        <td>
+            {% if appointment.status in ['rescheduled', 'canceled'] %}
+                {{ appointment.staff_reason }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

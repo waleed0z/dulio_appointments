@@ -1,0 +1,228 @@
+<title>Request Appointment</title>
+{% extends 'client_base.html' %}
+{% block active%}
+<ul>
+    <li>
+        <a href="{{ url_for('client_dashboard')}}" class="nav-link" data-content="dashboard"> 
+            <span><i class="fas fa-tachometer-alt"></i> </span>
+            <span>Dashboard</span> 
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('add_appointment') }}" class="active" data-content="clients">
+            <span><i class="fas fa-home"></i> </span>
+            <span>Request Appointment</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ url_for('logout') }}">
+            <span><i class="fas fa-sign-out-alt"></i></span>
+            <span>Logout</span>
+        </a>
+    </li>
+</ul>
+{% endblock active %}
+{% block content %}
+    <style>
+        :root {
+            --main-accent: black;
+            --main-light: #fff;
+        }
+        .appointment-section {
+            background: var(--main-light);
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .appointment-form-card {
+            border: 1.5px solid #e6c2b4;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(230,194,180,0.10);
+            background: var(--main-light);
+            margin-top: 1rem;
+            padding: 2rem 2rem 1.5rem 2rem;
+        }
+        .sec-title .title {
+            color: #e6c2b4;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+        }
+        .sec-title h2 {
+            font-weight: 500;
+            color: #e6c2b4;
+            margin-bottom: 1rem;
+        }
+        .appointment-form-card form {
+            width: 100%;
+        }
+        .appointment-form-card .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.08rem;
+            font-weight: 300;
+            color: #e6c2b4;
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+        }
+        .appointment-form-card .form-section-header:first-child {
+            margin-top: 0;
+        }
+        .appointment-form-card .form-icon {
+            font-size: 1.1rem;
+            color: #e6c2b4;
+        }
+        .appointment-form-card .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .appointment-form-card label, .appointment-form-card label.lb {
+            font-weight: 300;
+            color: var(--main-accent);
+            margin-bottom: 0.3rem;
+            display: block;
+            font-size: 1rem;
+        }
+        .appointment-form-card .form-control,
+        .appointment-form-card .custom-select-box {
+            border-radius: 7px;
+            border: 1.5px solid var(--main-accent);
+            background: var(--main-light);
+            font-size: 1rem;
+            padding: 0.65rem 0.9rem;
+            color: var(--main-accent);
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .appointment-form-card .form-control:focus,
+        .appointment-form-card .custom-select-box:focus {
+            border-color: var(--main-accent);
+            box-shadow: 0 0 0 2px #e6c2b466;
+            outline: none;
+            background: var(--main-light);
+            color: var(--main-accent);
+        }
+        .appointment-form-card .appointment-btn {
+            background: #e6c2b4;
+            border: 1.5px solid;
+            border-radius: 7px;
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--main-light);
+            padding: 0.7rem 2.5rem;
+            margin-top: 0.5rem;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            min-width: 180px;
+        }
+        .appointment-form-card .appointment-btn:hover,
+        .appointment-form-card .appointment-btn:focus {
+            color: black;
+        }
+        .appointment-form-card .appointment-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem 2%;
+        }
+        .appointment-form-card .col-md-6, .appointment-form-card .col-md-3 {
+            flex: 1 1 0;
+            min-width: 180px;
+            max-width: 48%;
+        }
+        .appointment-form-card .col-md-3 {
+            max-width: 23%;
+        }
+        @media (max-width: 991px) {
+            .appointment-form-card .appointment-row {
+                flex-direction: column;
+                gap: 0.5rem 0;
+            }
+            .appointment-form-card .col-md-6, .appointment-form-card .col-md-3 {
+                max-width: 100%;
+            }
+        }
+        .appointment-form-card ::placeholder {
+            color: var(--main-accent);
+            opacity: 1;
+        }
+    </style>
+    <!--Appointment Section-->
+    <section class="appointment-section">
+        <div class="container">
+            <div class="sec-title">
+                <div class="title"><i class="fas fa-calendar-alt" aria-hidden="true"></i> Do You Want to Work</div>
+                <h2>Request an Appointment</h2>
+            </div>
+            <div class="row clearfix">
+                <!--Form Column-->
+                <div class="form-column col-md-8 col-sm-12 col-xs-12">
+                    <div class="inner-column">
+                        <div class="appointment-form-card shadow-sm mb-4">
+                            <form method="POST" action="{{ url_for('add_appointment') }}" autocomplete="off">
+                                <!-- Personal Info Section -->
+                                <div class="form-section-header">
+                                    <span class="form-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+                                    Your Information
+                                </div>
+                                <div class="appointment-row">
+                                    <div class="form-group col-md-6">
+                                        <label class="lb" for="client_name">Name</label>
+                                        <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Your Name" required autocomplete="name">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="client_mail">Email</label>
+                                        <input type="email" class="form-control" id="client_mail" name="client_mail" placeholder="Your Email" required autocomplete="email">
+                                    </div>
+                                </div>
+                                <!-- Appointment Details Section -->
+                                <div class="form-section-header">
+                                    <span class="form-icon"><i class="fas fa-clock" aria-hidden="true"></i></span>
+                                    Appointment Details
+                                </div>
+                                <div class="appointment-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="person_name">Staff</label>
+                                        <select class="custom-select-box form-control" id="person_name" name="person_name" required>
+                                            <option value="">Select Staff</option>
+                                            {% for staff in staff_members %}
+                                            <option value="{{ staff.username }}">{{ staff.username }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="appointment_date">Date</label>
+                                        <input type="date" class="form-control datepicker" id="appointment_date" name="appointment_date" required>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="appointment_time">Time</label>
+                                        <input type="time" class="form-control timepicker" id="appointment_time" name="appointment_time" required>
+                                    </div>
+                                </div>
+                                <!-- Submit Button -->
+                                <div class="text-center mt-3">
+                                    <button class="theme-btn appointment-btn btn btn-primary" type="submit" name="submit-form">
+                                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Request Appointment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--Form Column-->
+                <div class="schedule-column col-md-4 col-sm-12 col-xs-12">
+                    <div class="inner-outer">
+                          <div class="inner-column">
+                              <h2>Business Hours:</h2>
+                              <ul class="time-list">
+                                  <li>Monday - Friday 9.00 AM - 5.00 PM</li>
+                                  <li>Saturday 9.00 AM - 3.00 PM</li>
+                                  <li><strong>Sunday Closed</strong></li>
+                                  <li class="closed">* Every 2nd, 4th Staurday and all govt holidays are closed.</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </section>
+{% endblock content%}

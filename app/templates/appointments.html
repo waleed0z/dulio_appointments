@@ -70,7 +70,7 @@
                         <td>{{appointment.client_mail }}</td>
                         <td>{{ appointment.appointment_date }}</td>
                         <td>{{appointment.appointment_time }}</td>
-                        <td>Eastside Family medicine</td>
+                        <td>{{appointment.person_name }}</td>
                     </tr>
                         {% endfor %}
                 </tbody>
@@ -148,6 +148,33 @@
             </section>
         </div>
     </div>
+    {% for appointment in appointments %}
+    <div class="appointment-actions" style="margin-bottom:2em;">
+        {% if appointment.status == 'pending' %}
+            <form action="{{ url_for('accept_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
+                <button type="submit">Accept</button>
+            </form>
+            <form action="{{ url_for('reschedule_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
+                <input type="date" name="reschedule_date" required>
+                <input type="time" name="reschedule_time" required>
+                <input type="text" name="reschedule_reason" placeholder="Reason for reschedule" required>
+                <button type="submit">Reschedule</button>
+            </form>
+            <form action="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
+                <input type="text" name="cancel_reason" placeholder="Reason for cancel" required>
+                <button type="submit">Cancel</button>
+            </form>
+        {% elif appointment.status == 'rescheduled' %}
+            <span class="badge badge-warning">Rescheduled</span>
+            <span>Reason: {{ appointment.staff_reason }}</span>
+        {% elif appointment.status == 'canceled' %}
+            <span class="badge badge-danger">Canceled</span>
+            <span>Reason: {{ appointment.staff_reason }}</span>
+        {% elif appointment.status == 'accepted' %}
+            <span class="badge badge-success">Accepted</span>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 </main>
 {% endblock content %}
