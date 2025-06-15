@@ -1,0 +1,74 @@
+{% extends 'staff_base.html' %}
+{% block content %}
+        <main>
+            <div class="projects-section">
+                <div class="projects-section-header">
+                 
+                     <div class="message">
+                            <h1>Hello {{ admin_username }},</h1>
+                            <h1>{{ message }}</h1>
+                            {% if not appointments %}
+                                <h1>No appointments found.</h1>
+                            {% endif %}                            
+                        </div>
+          
+            <p class="time">{{ current_date }}</p>
+                </div>
+                  </div>
+                  <hr>
+
+                  <h4>Google Calendar Integration</h4>
+                  {% if current_user.calendar_linked %}
+                      <p class="text-success">
+                          <i class="fas fa-check-circle"></i> Your Google Calendar is linked.
+                          Your availability will be checked automatically when clients book appointments.
+                      </p>
+                      <p><a href="{{ url_for('link_google_calendar') }}" class="btn btn-sm btn-outline-secondary">Re-link or Change Account</a></p>
+                  {% else %}
+                      <p class="text-warning">
+                          <i class="fas fa-exclamation-triangle"></i> Your Google Calendar is not linked.
+                      </p>
+                      <p>Link your Google Calendar to allow the system to automatically check your availability and prevent double bookings.</p>
+                      <a href="{{ url_for('link_google_calendar') }}" class="btn btn-primary">
+                          <i class="fab fa-google"></i> Link Google Calendar
+                      </a>
+                  {% endif %}
+              
+                  <hr>
+                      
+                <div class="project-boxes jsGridView">
+                {% for appointment in appointments %}  
+                  <div class="project-box-wrapper">
+                    <div class="project-box" style="background-color: white">
+                      <div class="project-box-header">
+                        <span>{{ appointment.appointment_date }}</span>
+                        <span>{{ appointment.appointment_time }}</span>
+                        </div>
+
+
+                  <div class="project-box-content-header">
+                    <p class="box-content-header">{{ appointment.client_name }}</p>  
+                  {% if not appointments %}
+                    <p class="box-content-subheader">No appointments.</p>
+                  </div>
+                  {% endif %}
+                  
+                  <div class="project-box-footer">
+                    <div class="info">
+                      <a href="{{url_for ('appointments') }}">More info</a>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>  
+            </div>  
+                {% endfor %}
+          </div>
+        <div class="content" id="main-content">
+            <div id="dynamic-content">
+                <!-- Content will be loaded here dynamically -->
+            </div>
+        </div>
+    
+</main>
+{% endblock %}
