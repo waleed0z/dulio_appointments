@@ -757,3 +757,101 @@ font-weight: 100;
     grid-template-columns: 1fr;
   }
 }
+
+/* Responsive styles for mobile devices */
+@media (max-width: 767px) {
+  .sidebar {
+    width: 100vw;
+    left: -100vw;
+    position: fixed;
+    z-index: 200;
+    height: 100vh;
+    transition: left 300ms;
+  }
+  #nav-toggle:checked + .sidebar {
+    left: 0 !important;
+    width: 100vw;
+  }
+  .main-content {
+    margin-left: 0 !important;
+    width: 100vw;
+    padding: 0.5rem 0.2rem;
+  }
+  header {
+    left: 0 !important;
+    width: 100vw !important;
+    padding: 0.7rem 0.7rem;
+    font-size: 1rem;
+  }
+  .projects-section {
+    padding: 16px 4px 0 4px;
+    border-radius: 0;
+  }
+  .projects-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+    margin-bottom: 12px;
+  }
+  .projects-section-header p,
+  .projects-section-header .time {
+    font-size: 1.1em;
+  }
+  .project-boxes.jsGridView {
+    flex-direction: column;
+  }
+  .project-boxes.jsGridView .project-box-wrapper {
+    width: 100%;
+    padding: 4px 0;
+  }
+  .project-box {
+    padding: 12px;
+  }
+  .project-box-content-header .box-content-header {
+    font-size: 1.1em;
+  }
+  .project-box-header span {
+    font-size: 0.95em;
+  }
+  .project-box-footer {
+    padding-top: 16px;
+  }
+  .info {
+    font-size: 0.95em;
+    padding: 6px 10px;
+  }
+  table {
+    font-size: 0.95em;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+  th, td {
+    padding: 6px 4px;
+    word-break: break-word;
+  }
+  .message h1 {
+    font-size: 1.1em;
+  }
+  h2, .container h2 {
+    font-size: 1.1em;
+  }
+  .sidebar-menu li, .sidebar-menu a {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 1em;
+  }
+  .sidebar-brand {
+    padding: 0.7rem 0.5rem 0.7rem 0.7rem;
+    font-size: 1.1em;
+  }
+  .sidebar-menu a span:first-child {
+    padding: 0 0.5rem;
+  }
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+  .project-boxes {
+    padding-top: 24px;
+  }
+}

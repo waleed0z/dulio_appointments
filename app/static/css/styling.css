@@ -686,3 +686,66 @@ html, body{
     color: var(--main-accent);
     opacity: 1;
 }
+
+/* Responsive styles for mobile devices */
+@media (max-width: 767px) {
+  .appointment-section {
+    flex-direction: column;
+    padding: 30px 0 20px;
+    margin-right: 0;
+  }
+  .appointment-section .form-column,
+  .appointment-section .schedule-column {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    padding: 0;
+  }
+  .appointment-form-card {
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .appointment-form-card .appointment-row {
+    flex-direction: column;
+    gap: 0.5rem 0;
+  }
+  .appointment-form-card .col-md-6,
+  .appointment-form-card .col-md-3 {
+    max-width: 100%;
+    min-width: 0;
+  }
+  .appointment-form-card label,
+  .appointment-form-card label.lb {
+    font-size: 0.98em;
+  }
+  .appointment-form-card .form-section-header {
+    font-size: 1em;
+    margin-bottom: 0.7rem;
+    margin-top: 1rem;
+  }
+  .appointment-form-card .appointment-btn {
+    min-width: 120px;
+    font-size: 0.98em;
+    padding: 0.5rem 1.2rem;
+  }
+  .appointment-section .schedule-column .inner-column {
+    padding: 15px 10px;
+  }
+  .appointment-section .schedule-column h2 {
+    font-size: 1.1em;
+  }
+  .appointment-section .schedule-column .time-list li {
+    font-size: 0.98em;
+  }
+  .sec-title h2 {
+    font-size: 1.2em;
+    top: 0;
+    padding-bottom: 0.5em;
+  }
+  .sec-title .title {
+    font-size: 1em;
+  }
+  .container {
+    padding: 0 0.5em;
+  }
+}
