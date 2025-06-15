@@ -1,4 +1,4 @@
-                    $divAppointmentContainer = $('#divAppointmentContainer'),
+$divAppointmentContainer = $('#divAppointmentContainer'),
                     $divAppointmentDetailContainer = $('#divAppointmentDetailContainer'),
                     $divAppointmentContent = $('#divAppointmentContent'),
                     $spanAppointmentDateDetails = $('#spanAppointmentDateDetails'),
@@ -7,6 +7,7 @@
                     $spanAppointmentTypeDetails = $('#spanAppointmentTypeDetails'),
                     $spanAppointmentOrgDetails = $('#spanAppointmentOrgDetails'),
                     $spanAppointmentNoteDetails = $('#spanAppointmentNoteDetails'),
+                    $spanAppointmentStatusDetails = $('#spanAppointmentStatusDetails')
                     $tableAppointmentData = $('#tableAppointmentData'),
                     $iPrevPage = $('#iPrevPage'),
                     $iNextPage = $('#iNextPage'),
@@ -19,12 +20,63 @@
                     $spanTotalPages = $('#spanTotalPages'),
                     $upcomingRecords = $tableRows.filter(':not(.past-appointment-entry)').hide(),
                     $pastRecords = $tableRows.filter('.past-appointment-entry').hide(),
-                    $divNoRecordsFound = $('#divNoRecordsFound');
+                    $divNoRecordsFound = $('#divNoRecordsFound'),
+                    $divSelectedAppointmentActions = $('#divSelectedAppointmentActions');
                 
                 //FILTER
                 $selAppointmentFilter.on('change', function() {
                     bindRecords();
                 });
+                
+                // Helper to render action buttons for the selected appointment
+                function renderAppointmentActions(appointment) {
+                    var status = appointment.status;
+                    var id = appointment.id;
+                    console.log("Appointment ID for action URLs:", id); // Debug line
+                    var staff_reason = appointment.staff_reason || '';
+                    var html = '';
+                
+                    if (status === 'pending') {
+                        html += `
+                            <form action="/staff/appointment/${id}/reschedule" method="post" style="display:inline;">
+                                <input type="date" name="reschedule_date" required>
+                                <input type="time" name="reschedule_time" required>
+                                <input type="text" name="reschedule_reason" placeholder="Reason for reschedule" required>
+                                <button type="submit" id="btnRescheduleAppointment">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Reschedule</span>
+                                </button>
+                            </form>
+                            <form action="/staff/appointment/${id}/accept" method="post" style="display:inline;">
+                                <button type="submit" id="btnAcceptAppointment">
+                                    <span>Accept</span>
+                                </button>
+                            </form>
+                            <form action="/staff/appointment/${id}/cancel" method="post" style="display:inline;">
+                                <input type="text" name="cancel_reason" placeholder="Reason for cancel" required>
+                                <button type="submit" id="btnCancelAppointment">
+                                    <span>Cancel</span>
+                                </button>
+                            </form>
+                        `;
+                    } else if (status === 'rescheduled') {
+                        html += `<span class="badge badge-warning"><h2>Rescheduled</h2></span> <span><p>Reason: ${staff_reason}</p></span>`;
+                    } else if (status === 'canceled') {
+                        html += `<span class="badge badge-success"><h2>Canceled</h2></span><span><br><p>Reason: ${staff_reason}</p></span>`;
+                    } else if (status === 'accepted') {
+                        html += `<span class="badge badge-success"><h2>Accepted</h2></span>`;
+                    }
+                    $divSelectedAppointmentActions.html(html);
+                }
+                
+                // Helper to get appointment data from a row
+                function getAppointmentDataFromRow($row) {
+                    return {
+                        id: $row.data('id'),
+                        status: $row.attr('data-status'),
+                        staff_reason: $row.attr('data-note') // assuming staff_reason is stored in data-note
+                    };
+                }
                 
                 //ROW SELECTIONS
                 $tableRows.on('click', function() {
@@ -41,7 +93,12 @@
                     $spanAppointmentTypeDetails.text($this.attr('data-staff'));
                     $spanAppointmentOrgDetails.text($this.attr('data-mail'));
                     $spanAppointmentNoteDetails.text($this.attr('data-note'));
+                    $spanAppointmentStatusDetails.text($this.attr('data-status'));
                     $divAppointmentContent.show();
+                
+                    // Render action buttons for the selected appointment only
+                    var appointment = getAppointmentDataFromRow($this);
+                    renderAppointmentActions(appointment);
                 });
                 
                 //SORTING

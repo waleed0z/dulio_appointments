@@ -30,6 +30,96 @@
 {% endblock active %}
 {% block content %}
 <main>
+<style>
+#divSelectedAppointmentActions{
+    position: relative;
+}
+/* Style for appointment action inputs and buttons */
+#divSelectedAppointmentActions input[type="date"],
+#divSelectedAppointmentActions input[type="time"],
+#divSelectedAppointmentActions input[type="text"] {
+    padding: 0.4em 0.7em;
+    margin: 0 0.3em 0.5em 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    background: #fafbfc;
+    transition: border-color 0.2s;
+    min-width: 120px;
+}
+#divSelectedAppointmentActions input[type="date"]:focus,
+#divSelectedAppointmentActions input[type="time"]:focus,
+#divSelectedAppointmentActions input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+#divSelectedAppointmentActions button {
+    padding: 0.4em 1em;
+    margin: 0 0.3em 0.5em 0;
+    border: none;
+    border-radius: 4px;
+    background: #e6c2b4;
+    color: rgba(0, 0, 0, 0.625);
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+#divSelectedAppointmentActions button:hover {
+    color: rgb(10, 10, 10);
+}
+#divSelectedAppointmentActions .fa {
+    margin-right: 0.3em;
+}
+#divSelectedAppointmentActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7em 1em;
+    margin: 1.2em 0 1.5em 0;
+    align-items: flex-start;
+}
+#divSelectedAppointmentActions form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+    border-radius: 6px;
+    padding: 0.7em 1em 0.7em 1em;
+    margin-bottom: 0.5em;
+}
+#divSelectedAppointmentActions form:not(:last-child) {
+    margin-right: 0.7em;
+}
+#divSelectedAppointmentActions .badge {
+    margin-right: 0.7em;
+    padding: 0.4em 0.8em;
+    border-radius: 4px;
+    font-size: 0.97em;
+    font-weight: 500;
+    display: inline-block;
+}
+/* Style for appointment filter select */
+#selAppointmentFilter {
+    padding: 0.4em 0.7em;
+    margin: 0 0.3em 0.5em 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    background: #fafbfc;
+    color: #333;
+    transition: border-color 0.2s;
+    outline: none;
+}
+#selAppointmentFilter:focus {
+    border-color: #007bff;
+    background: #fff;
+}
+#selAppointmentFilter option {
+    color: #333;
+    background: #fafbfc;
+}
+</style>
 <div class="container">
     <h2>Appointments</h2>
 
@@ -43,10 +133,6 @@
                 <option value="past">All Past</option>
             </select>
         </div>
-        <button id="btnNewAppointment">
-            <i class="fa fa-calendar-plus-o"></i>
-            <span>Schedule Appointment</span>
-        </button>
     </div>
 
     <div id="divAppointmentContainer">
@@ -59,18 +145,20 @@
                         <td>Date <i class="fa fa-sort"></i></td>
                         <td>Time <i class="fa fa-sort"></i></td>
                         <td>Staff <i class="fa fa-sort"></i></td>
+                        <td>Status <i class="fa fa-sort"></i></td>
                     </tr>
                 </tbody>
             </table>
             <div id="divNoRecordsFound">No appointments found</div>
             <table id="tableAppointmentData" data-page="1">
                 <tbody>{% for appointment in appointments %}
-                    <tr data-date="{{ appointment.appointment_date }}" data-client="{{ appointment.client_name }}" data-time="{{ appointment.appointment_time }}" data-staff="{{ appointment.person_name }}" data-mail="{{ appointment.client_mail }}" data-note="Some potentially long note that no one will ever read.">
+                    <tr data-id="{{ appointment.id }}" data-date="{{ appointment.appointment_date }}" data-client="{{ appointment.client_name }}" data-time="{{ appointment.appointment_time }}" data-staff="{{ appointment.person_name }}" data-mail="{{ appointment.client_mail }}" data-note="{{ appointment.staff_reason }}" data-status="{{ appointment.status }}">
                         <td>{{ appointment.client_name }}</td>
                         <td>{{appointment.client_mail }}</td>
                         <td>{{ appointment.appointment_date }}</td>
                         <td>{{appointment.appointment_time }}</td>
                         <td>{{appointment.person_name }}</td>
+                        <td>{{ appointment.status }}</td>
                     </tr>
                         {% endfor %}
                 </tbody>
@@ -95,21 +183,8 @@
 
     <div class="appointment-details">
         <div id="divAppointmentContent" class="appointment-content">
+            <h2>Appointment Details</h2>
             <div id="divAppointmentDetailContainer">
-                <div class="appointment-data">
-                    <span>Appointment Details</span>
-                    <div class="appointment-actions">
-                        <button id="btnRescheduleAppointment">
-                            <i class="fa fa-calendar"></i>
-                            <span>Reschedule</span>
-                        </button>
-                        <button id="btnCancelAppointment">
-                            <i class="fa fa-calendar-times-o"></i>
-                            <span>Cancel</span>
-                        </button>
-                    </div>
-                </div>
-
                 <table id="tableAppointmentDetails">
                     <tbody>
                         <tr>
@@ -134,47 +209,26 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td>
                                 <span>Note</span>
                                 <span id="spanAppointmentNoteDetails"></span>
                             </td>
-                        </tr>
+                            <td colspan="5">
+                                <span>Status</span>
+                                <span id="spanAppointmentStatusDetails"></span>
+                            </td>
+                        </tr>    
+                        
                     </tbody>
                 </table>
-            </div>
-
-            <section id="secMapContainer">
-                <iframe id="iframeMap"></iframe>
-            </section>
+            </div>    
+                <div class="appointment-data">
+                    <div id="divSelectedAppointmentActions" class="appointment-actions"></div>
+                </div>
+                
+            
         </div>
     </div>
-    {% for appointment in appointments %}
-    <div class="appointment-actions" style="margin-bottom:2em;">
-        {% if appointment.status == 'pending' %}
-            <form action="{{ url_for('accept_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                <button type="submit">Accept</button>
-            </form>
-            <form action="{{ url_for('reschedule_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                <input type="date" name="reschedule_date" required>
-                <input type="time" name="reschedule_time" required>
-                <input type="text" name="reschedule_reason" placeholder="Reason for reschedule" required>
-                <button type="submit">Reschedule</button>
-            </form>
-            <form action="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                <input type="text" name="cancel_reason" placeholder="Reason for cancel" required>
-                <button type="submit">Cancel</button>
-            </form>
-        {% elif appointment.status == 'rescheduled' %}
-            <span class="badge badge-warning">Rescheduled</span>
-            <span>Reason: {{ appointment.staff_reason }}</span>
-        {% elif appointment.status == 'canceled' %}
-            <span class="badge badge-danger">Canceled</span>
-            <span>Reason: {{ appointment.staff_reason }}</span>
-        {% elif appointment.status == 'accepted' %}
-            <span class="badge badge-success">Accepted</span>
-        {% endif %}
-    </div>
-    {% endfor %}
 </div>
 </main>
 {% endblock content %}

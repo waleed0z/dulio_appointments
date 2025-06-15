@@ -15,28 +15,9 @@ html, body{
   padding-bottom: 40px;
 }
 
-.sec-title .title {
-  position: relative;
-  color: #00b8ca;
-  font-size: 18px;
-  font-weight: 700;
-  padding-right: 50px;
-  margin-bottom: 15px;
-  display: inline-block;
-  text-transform: capitalize;
-}
-
-.sec-title .title:before {
-  position: absolute;
-  content: '';
-  right: 0;
-  bottom: 7px;
-  width: 40px;
-  height: 1px;
-  background-color: #bbb;
-}
 
 .sec-title h2 {
+  top:50px;
   position: relative;
   color: #252525;
   font-size: 36px;
@@ -55,6 +36,7 @@ html, body{
   position: relative;
   padding: 110px 0 80px;
   justify-content:center;
+  margin-right: 10px;
 }
 
 .appointment-section .form-column {
@@ -169,7 +151,7 @@ html, body{
 .appointment-section .schedule-column .inner-column {
   position: relative;
   padding: 25px 30px;
-  border: 2px solid #00b8ca;
+  border: 2px solid #e6c2b4;
   background-color: #fff;
   width:100%;
 }
@@ -398,7 +380,7 @@ html, body{
   margin-right: 0.4em;
 }
 
-#btnCancelAppointment,
+#btnCancelAppointment, #btnAcceptAppointment,
 #btnRescheduleAppointment {
   font-family: Poppins, sans-serif;
   padding: 5.5px 15px;
@@ -407,13 +389,13 @@ html, body{
   background-color: #e6c2b4;
   color: #5d5d5d;
 }
-#btnCancelAppointment,
+#btnCancelAppointment, #btnAcceptAppointment,  
 #btnRescheduleAppointment span{
   font-weight: 400;
   
 }
 
-#btnCancelAppointment:hover,
+#btnAcceptAppointment:hover, #btnCancelAppointment:hover,
 #btnRescheduleAppointment:hover {
   border: 1px rgba(0, 0, 0, 0.2);
   color: black;
@@ -464,17 +446,17 @@ html, body{
   display: inline-block;
 }
 
-.appointment-details #secMapContainer {
+.appointment-details {
   overflow: hidden;
   clear: both;
 }
 
-.appointment-details #secMapContainer iframe {
+.appointment-details{
   width: 100%;
-  height: 300px;
+  height: 500px;
   border: none;
   border-radius: 3px;
-  position: relative;
+  position:relative;
   bottom: -4px;
 }
 
@@ -539,4 +521,168 @@ html, body{
   border-radius: 10px;
   background-color: #e6c2b4;
   color: #5d5d5d;
+}
+
+/* === Appointment Form Card Styles (from add_appointment.html) === */
+:root {
+    --main-accent: black;
+    --main-light: #fff;
+}
+.appointment-section {
+    background: var(--main-light);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.appointment-form-card {
+    border: 1.5px solid #e6c2b4;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(230,194,180,0.10);
+    background: var(--main-light);
+    margin-top: 1rem;
+    padding: 2rem 2rem 1.5rem 2rem;
+}
+.sec-title .title {
+    color: #e6c2b4;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+}
+.sec-title h2 {
+    font-weight: 500;
+    color: #e6c2b4;
+    margin-bottom: 1rem;
+}
+.appointment-form-card form {
+    width: 100%;
+}
+.appointment-form-card .form-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.08rem;
+    font-weight: 300;
+    color: #e6c2b4;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+}
+.appointment-form-card .form-section-header:first-child {
+    margin-top: 0;
+}
+.appointment-form-card .form-icon {
+    font-size: 1.1rem;
+    color: #e6c2b4;
+}
+.appointment-form-card .form-group {
+    margin-bottom: 1.2rem;
+}
+.appointment-form-card label, .appointment-form-card label.lb {
+    font-weight: 300;
+    color: var(--main-accent);
+    margin-bottom: 0.3rem;
+    display: block;
+    font-size: 1rem;
+}
+.appointment-form-card .form-control,
+.appointment-form-card .custom-select-box {
+    border-radius: 7px;
+    border: 1.5px solid var(--main-accent);
+    background: var(--main-light);
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+    color: gray;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+/* Gray when empty/invalid, black when filled/valid */
+.appointment-form-card .form-control:invalid,
+.appointment-form-card .custom-select-box:invalid,
+.appointment-form-card select#person_name:invalid {
+    color: gray;
+}
+.appointment-form-card .form-control:valid,
+.appointment-form-card .custom-select-box:valid,
+.appointment-form-card select#person_name:valid {
+    color: var(gray);
+}
+.appointment-form-card .form-control:focus,
+.appointment-form-card .custom-select-box:focus {
+    border-color: var(--main-accent);
+    box-shadow: 0 0 0 2px #e6c2b466;
+    outline: none;
+    background: var(--main-light);
+    color: var(--main-accent);
+}
+/* Style the staff select and its options */
+.appointment-form-card select#person_name {
+    border-radius: 7px;
+    border: 1.5px solid var(--main-accent);
+    background: var(--main-light);
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+    color: gray;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.appointment-form-card select#person_name:focus {
+    border-color: var(--main-accent);
+    box-shadow: 0 0 0 2px #e6c2b466;
+    outline: none;
+    background: var(--main-light);
+    color: var(--main-accent);
+}
+.appointment-form-card select#person_name option {
+    padding: 0.65rem 0.9rem;
+    color: var(--main-accent);
+    background: var(--main-light);
+    font-size: 1rem;
+}
+.appointment-form-card select#person_name:not([value=""]) {
+    color: var(--main-accent);
+}
+.appointment-form-card .appointment-btn {
+    background: #e6c2b4;
+    border: 1.5px solid;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--main-light);
+    padding: 0.7rem 2.5rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    min-width: 180px;
+}
+.appointment-form-card .appointment-btn:hover,
+.appointment-form-card .appointment-btn:focus {
+    color: black;
+}
+.appointment-form-card .appointment-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 2%;
+}
+.appointment-form-card .col-md-6, .appointment-form-card .col-md-3 {
+    flex: 1 1 0;
+    min-width: 180px;
+    max-width: 48%;
+}
+.appointment-form-card .col-md-3 {
+    max-width: 23%;
+}
+@media (max-width: 991px) {
+    .appointment-form-card .appointment-row {
+        flex-direction: column;
+        gap: 0.5rem 0;
+    }
+    .appointment-form-card .col-md-6, .appointment-form-card .col-md-3 {
+        max-width: 100%;
+    }
+}
+.appointment-form-card ::placeholder {
+    color: var(--main-accent);
+    opacity: 1;
 }
