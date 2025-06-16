@@ -7,6 +7,8 @@ from datetime import date, datetime, timedelta
 import uuid
 import os
 from sqlalchemy import func
+from flask import Flask, request, redirect, url_for, render_template, flash, session
+
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -284,7 +286,7 @@ def register_routes(app):
         if current_user.role != 'client':
             return redirect(url_for('staff_dashboard'))
         
-        appointments = Appointment.query.filter_by(client_id=current_user.id).all()
+        appointments = Appointment.query.filter_by(client_id=current_user.id, status='pending').all()
         client_username = current_user.username
 
         return render_template('client_dashboard.html', appointments=appointments, client_username=client_username)

@@ -19,31 +19,42 @@
                 <div class="project-boxes jsGridView">
                 {% for appointment in appointments %}  
                   <div class="project-box-wrapper">
-                    <div class="project-box" style="background-color: white">
-                      <div class="project-box-header">
-                        <span>{{ appointment.appointment_date }}</span>
-                        <span>{{ appointment.appointment_time }}</span>
+                    <div class="project-box styled-card">
+                      <div class="project-box-header styled-card-header">
+                        <div>
+                          <span class="date">{{ appointment.appointment_date }}</span>
+                          <span class="time">{{ appointment.appointment_time }}</span>
                         </div>
-
-
-                  <div class="project-box-content-header">
-                    <p class="box-content-header">{{ appointment.client_name }}</p>  
-                  {% if not appointments %}
-                    <p class="box-content-subheader">No appointments.</p>
-                  </div>
-                  {% endif %}
-                  
-                  <div class="project-box-footer">
-                    <div class="info">
-                      <a href="{{url_for ('appointments') }}">More info</a>
+                        <span class="status-badge
+                          {% if appointment.status == 'pending' %}status-pending
+                          {% elif appointment.status == 'accepted' %}status-accepted
+                          {% elif appointment.status == 'rescheduled' %}status-rescheduled
+                          {% elif appointment.status == 'canceled' %}status-canceled
+                          {% endif %}">
+                          {{ appointment.status|capitalize }}
+                        </span>
+                      </div>
+                      <div class="project-box-content-header styled-card-content">
+                        <p class="box-content-header client-name">{{ appointment.client_name }}</p>
+                        {% if not appointments %}
+                          <p class="box-content-subheader">No appointments.</p>
+                        {% endif %}
+                      </div>
+                      <div class="project-box-footer styled-card-footer">
+                        <a href="{{url_for ('appointments') }}" class="info">More info</a>
+                        <form action="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" method="post">
+                          <button type="submit"
+                            class="delete-btn"
+                            onclick="return confirm('Are you sure you want to delete this appointment?');">
+                            Delete
+                          </button>
+                        </form>
+                      </div>
                     </div>
-                    
-                  </div>
-                </div>
+                  </div>  
+                {% endfor %}
               </div>  
             </div>  
-                {% endfor %}
-          </div>
         <div class="content" id="main-content">
             <div id="dynamic-content">
                 <!-- Content will be loaded here dynamically -->
@@ -51,61 +62,5 @@
         </div>
     
 </main>
-<h2>Staff Dashboard</h2>
-<p>{{ message }}</p>
-<table>
-    <tr>
-        <th>Client</th>
-        <th>Email</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Status</th>
-        <th>Reason</th>
-        <th>Actions</th>
-    </tr>
-    {% for appointment in appointments %}
-    <tr>
-        <td>{{ appointment.client_name }}</td>
-        <td>{{ appointment.client_mail }}</td>
-        <td>{{ appointment.appointment_date }}</td>
-        <td>{{ appointment.appointment_time }}</td>
-        <td>
-            {% if appointment.status == 'pending' %}
-                <span class="badge badge-secondary">Pending</span>
-            {% elif appointment.status == 'accepted' %}
-                <span class="badge badge-success">Accepted</span>
-            {% elif appointment.status == 'rescheduled' %}
-                <span class="badge badge-warning">Rescheduled</span>
-            {% elif appointment.status == 'canceled' %}
-                <span class="badge badge-danger">Canceled</span>
-            {% endif %}
-        </td>
-        <td>
-            {% if appointment.status in ['rescheduled', 'canceled'] %}
-                {{ appointment.staff_reason }}
-            {% endif %}
-        </td>
-        <td>
-            {% if appointment.status == 'pending' %}
-                <form action="{{ url_for('accept_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                    <button type="submit">Accept</button>
-                </form>
-                <form action="{{ url_for('reschedule_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                    <input type="date" name="reschedule_date" required>
-                    <input type="time" name="reschedule_time" required>
-                    <input type="text" name="reschedule_reason" placeholder="Reason for reschedule" required>
-                    <button type="submit">Reschedule</button>
-                </form>
-                <form action="{{ url_for('cancel_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                    <input type="text" name="cancel_reason" placeholder="Reason for cancel" required>
-                    <button type="submit">Cancel</button>
-                </form>
-            {% endif %}
-            <form action="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Are you sure you want to delete this appointment?');">Delete</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
 </table>
 {% endblock %}

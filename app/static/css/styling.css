@@ -687,6 +687,152 @@ html, body{
     opacity: 1;
 }
 
+/* Modern card style for appointment boxes */
+.styled-card {
+  border: 1.5px solid #e6c2b4;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(230,194,180,0.10);
+  padding: 1.2rem 1.5rem 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  margin-bottom: 1.2rem;
+  transition: box-shadow 0.2s;
+}
+.styled-card:hover {
+  box-shadow: 0 4px 16px rgba(230,194,180,0.18);
+}
+
+.styled-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.7rem;
+}
+.styled-card-header .date,
+.styled-card-header .time {
+  display: inline-block;
+  font-size: 1em;
+  color: #8d7b68;
+  margin-right: 0.7em;
+  font-weight: 400;
+}
+.styled-card-header .time {
+  margin-right: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.3em 1em;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  margin-left: 0.5em;
+  margin-top: 2px;
+}
+.status-pending {
+  background: #f7e6b5;
+  color: #b48a00;
+  border: 1px solid #f1d97a;
+}
+.status-accepted {
+  background: #d4f7d4;
+  color: #1a7f37;
+  border: 1px solid #7be495;
+}
+.status-rescheduled {
+  background: #ffe6b3;
+  color: #b36b00;
+  border: 1px solid #ffd580;
+}
+.status-canceled {
+  background: #ffd6d6;
+  color: #d32f2f;
+  border: 1px solid #ffb3b3;
+}
+
+.styled-card-content {
+  margin-bottom: 1.1rem;
+  text-align: left;
+}
+.client-name {
+  font-size: 1.18em;
+  font-weight: 600;
+  color: #252525;
+  margin-bottom: 0.2em;
+  letter-spacing: 0.01em;
+}
+
+.styled-card-footer {
+  display: flex;
+  gap: 0.7em;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.5em;
+}
+.styled-card-footer .info {
+  font-size: 0.98em;
+  padding: 7.5px 15px;
+  border-radius: 20px;
+  background-color: #fee4cb;
+  color: #222;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: none;
+  transition: background 0.18s, color 0.18s;
+  display: inline-block;
+}
+.styled-card-footer .info:hover {
+  background-color: #e6c2b4;
+  color: #000;
+}
+.styled-card-footer .delete-btn {
+  font-family: Poppins, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  padding: 7.5px 15px;
+  border-radius: 20px;
+  border: 0;
+  background-color: #ff0000;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none;
+  box-shadow: none;
+  outline: none;
+  display: inline-block;
+}
+.styled-card-footer .delete-btn:hover {
+  background-color: #e60000;
+  color: #fff;
+}
+
+/* Responsive for cards */
+@media (max-width: 767px) {
+  .styled-card {
+    padding: 0.8rem 0.5rem 0.8rem 0.5rem;
+    min-height: 120px;
+  }
+  .styled-card-header .date,
+  .styled-card-header .time {
+    font-size: 0.98em;
+  }
+  .client-name {
+    font-size: 1em;
+  }
+  .styled-card-footer .info,
+  .styled-card-footer .delete-btn {
+    font-size: 0.95em;
+    padding: 6px 10px;
+  }
+}
+
 /* Responsive styles for mobile devices */
 @media (max-width: 767px) {
   .appointment-section {

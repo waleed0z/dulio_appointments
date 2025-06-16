@@ -1,7 +1,7 @@
 {% extends 'client_base.html' %}
 {% block content %}
-<div class="appointments-container" style="max-width: 800px; margin: 2rem auto;" font-family=Poppins, "Sans-serif">
-    <h2 style="text-align:center; margin-bottom: 1.5rem; font-weight: 300; color: #333;">Your Appointments</h2>
+<div class="appointments-container" style="max-width: 800px; margin: 2rem auto;">
+    <h2 style="text-align:center; margin-bottom: 1.5rem; font-weight: 600; color: #333;">Your Appointments</h2>
     <div class="card" style="box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-radius: 12px; padding: 2rem; background: #fff;">
         <table style="width:100%; border-collapse: separate; border-spacing: 0 0.5rem;">
             <thead>
@@ -16,7 +16,7 @@
             <tbody>
             {% for appointment in appointments %}
                 <tr style="background: #fdfdfd; border-radius: 8px;">
-                    <td style="padding: 0.75rem; font-weight: 200;">{{ appointment.person_name }}</td>
+                    <td style="padding: 0.75rem; font-weight: 500;">{{ appointment.person_name }}</td>
                     <td style="padding: 0.75rem;">{{ appointment.appointment_date }}</td>
                     <td style="padding: 0.75rem;">{{ appointment.appointment_time }}</td>
                     <td style="padding: 0.75rem;">
