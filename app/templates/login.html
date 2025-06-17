@@ -147,20 +147,25 @@
             background-color: #d6d1d1e1;
         }
         /* Responsive styles */
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
             form {
-                width: 95vw;
-                min-width: 0;
-                padding: 30px 10px;
+                width: 100vw;
+                max-width: 98vw;
+                box-sizing: border-box;
+                padding: 24px 6vw;
+                margin: 0 auto;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
             }
             .background {
-                width: 98vw;
+                width: 100vw;
                 height: 100vw;
-                min-width: 0;
+                min-width: unset;
             }
             .background .shape {
-                height: 100px;
-                width: 100px;
+                height: 80px;
+                width: 80px;
             }
         }
     </style>
