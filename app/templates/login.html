@@ -136,36 +136,32 @@
             background-repeat: no-repeat;
             background-position: 12px 11px;
         }
-        .login-with-google-btn a{
-            font-size: 15px;
-            font-weight: 400;
-            font-family: Poppins, sans-serif;
-            text-decoration: none;
-        }
-  
         .login-with-google-btn :active {
             background-color: #d6d1d1e1;
         }
-        /* Responsive styles */
-        @media (max-width: 600px) {
+        @media (max-width: 500px) {
             form {
-                width: 100vw;
+                width: 95vw;
+                min-width: unset;
                 max-width: 98vw;
-                box-sizing: border-box;
-                padding: 24px 6vw;
-                margin: 0 auto;
+                padding: 20px 5vw;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
+                box-sizing: border-box;
             }
             .background {
                 width: 100vw;
-                height: 100vw;
+                height: 60vw;
                 min-width: unset;
             }
             .background .shape {
                 height: 80px;
                 width: 80px;
+            }
+            body {
+                padding: 0;
+                margin: 0;
             }
         }
     </style>

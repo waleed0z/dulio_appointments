@@ -107,21 +107,29 @@
         .signup-with-google:active {
             background-color: #d6d1d1e1;
         }
-        /* Responsive styles */
         @media (max-width: 500px) {
             form {
                 width: 95vw;
-                min-width: 0;
-                padding: 30px 10px;
+                min-width: unset;
+                max-width: 98vw;
+                padding: 20px 5vw;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                box-sizing: border-box;
             }
             .background {
-                width: 98vw;
-                height: 100vw;
-                min-width: 0;
+                width: 100vw;
+                height: 60vw;
+                min-width: unset;
             }
             .background .shape {
-                height: 100px;
-                width: 100px;
+                height: 80px;
+                width: 80px;
+            }
+            body {
+                padding: 0;
+                margin: 0;
             }
         }
     </style>
