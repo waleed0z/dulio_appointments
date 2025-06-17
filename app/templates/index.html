@@ -292,37 +292,54 @@ ul {
   }
   #footer {
     margin: 0;
-    padding: 0.5em 0;
-    font-size: 0.95em;
+    padding: 1.2em 0 15em 0;
+    font-size: 0.98em;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    gap: 0.2em;
+    background-color: whitesmoke;
+    border-top: 1px solid #e6c2b4;
+    min-height: 180px; /* Ensures enough space for stacking */
   }
   #footer ul {
-    padding: 0.5em 0;
-    font-size: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 0.2em;
+    gap: 0.7em;
+    padding: 0;
+    margin: 0 0 0.7em 0;
+    width: 100%;
+    /* Remove margin-bottom: auto; if present */
   }
   #footer ul li {
     display: block;
-    margin: 0.2em 0;
+    width: 100%;
+    text-align: center;
   }
   #footer ul li a {
-    padding: 0.2em 0.5em;
-    font-size: 1em;
+    display: block;
+    padding: 0.7em 0;
+    font-size: 1.08em;
+    color: #5d5d5d;
+    border-radius: 8px;
+    background: none;
+    transition: background 0.2s, color 0.2s;
   }
-  #footer h4 {
-    font-size: 0.95em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+  #footer ul li a:hover {
+    background: #e6c2b4;
+    color: #fff;
+  }
+  #footer ul h4 {
+    font-size: 1em;
+    padding: 0.7em 0 0 0;
+    margin-bottom: 100px;
     text-align: center;
     width: 100%;
-    margin: 0;
-    order: 2;
+    font-weight: 400;
+    color: #888;
+    background: none;
+    /* Remove margin-top: auto; and order if present */
   }
   .container {
     padding-left: 0.5em;
@@ -362,8 +379,8 @@ ul {
             <li><a href="">JOIN US</a></li>
             <li><a href="">GET INVOLVED</a></li>
             <li><a href="">PARTNERS</a></li>
+            <h4>&copy; 2022 Persona. All Rights Reserved.</h4>
           </ul>
-        <h4>&copy; 2022 Persona. All Rights Reserved.</h4>
-    </div>
+        </div>
   </body>
 </html>
