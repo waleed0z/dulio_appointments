@@ -230,6 +230,94 @@ ul {
 #footer ul li a:hover {
   color: #e6c2b4;
 }
+
+/* Responsive styles for mobile devices */
+@media (max-width: 767px) {
+  .landing-page header {
+    min-height: auto;
+    display: block;
+  }
+  .landing-page header .container {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 0.5em 0;
+  }
+  .landing-page header .logo {
+    font-size: 2em;
+    margin: 10px 0;
+  }
+  .landing-page header .links {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  .landing-page header .links li {
+    margin-left: 0;
+    margin-right: 0.5em;
+  }
+  .landing-page .content .container {
+    flex-direction: column-reverse;
+    gap: 0;
+    min-height: unset;
+    padding: 0.5em 0;
+  }
+  .landing-page .content .info {
+    text-align: center;
+    margin-bottom: 1em;
+    padding: 0 0.5em;
+  }
+  .landing-page .content .info h1 {
+    font-size: 1.5em;
+  }
+  .landing-page .content .info p {
+    font-size: 1em;
+  }
+  .landing-page .content .info button {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1em;
+    margin-top: 1em;
+  }
+  .landing-page .content .image img {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    max-width: 90vw;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #footer {
+    margin: 0;
+    padding: 0.5em 0;
+    font-size: 0.95em;
+  }
+  #footer ul {
+    padding: 0.5em 0;
+    font-size: 1em;
+  }
+  #footer ul li {
+    display: block;
+    margin: 0.2em 0;
+  }
+  #footer ul li a {
+    padding: 0.2em 0.5em;
+    font-size: 1em;
+  }
+  #footer h4 {
+    font-size: 0.95em;
+    padding-top: 0.5em;
+  }
+  .container {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
 </style>
 <!-- Start Landing Page -->
       <div class="landing-page">
