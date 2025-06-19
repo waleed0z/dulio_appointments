@@ -146,6 +146,23 @@
         .login-with-google-btn :active {
             background-color: #d6d1d1e1;
         }
+        @media (max-width: 500px) {
+            form {
+                border: none;
+                width: 96vw;
+                min-width: 0;
+                max-width: 100vw;
+                padding: 16px 2vw;
+                box-sizing: border-box;
+            }
+            form input, .submit, .login-with-google-btn {
+                width: 92vw;
+                max-width: 100%;
+                font-size: 14px;
+                padding: 10px 8px;
+                box-sizing: border-box;
+            }
+        }
     </style>
 </head>
 <body>
