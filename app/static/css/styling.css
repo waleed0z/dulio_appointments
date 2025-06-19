@@ -969,7 +969,7 @@ html, body{
     border-radius: 0 0 8px 8px;
     overflow-x: auto;
   }
-  #tableAppointmentDetails {
+  #tableAppointmentDetails .appointment-data {
     min-width: 600px;
     width: max-content;
     margin: 0.5em 0;
@@ -996,6 +996,9 @@ html, body{
   }
   #tableAppointmentDetails td span:empty {
     display: none;
+  }
+  .appointment-actions{
+    left:15px;
   }
   .appointment-details .appointment-actions button,
   .appointment-details .appointment-actions .delete-btn,
