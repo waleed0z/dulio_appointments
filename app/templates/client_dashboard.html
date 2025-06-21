@@ -1,58 +1,60 @@
 {% extends 'client_base.html' %}
 {% block content %}
-<div class="appointments-container" style="max-width: 800px; margin: 2rem auto;" font-family=Poppins, "Sans-serif">
-    <h2 style="text-align:center; margin-bottom: 1.5rem; font-weight: 300; color: #333;">Your Appointments</h2>
-    <div class="card" style="box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-radius: 12px; padding: 2rem; background: #fff;">
-        <table style="width:100%; border-collapse: separate; border-spacing: 0 0.5rem;">
-            <thead>
-                <tr style="background: #f8f9fa;">
-                    <th style="padding: 0.75rem; text-align:left; color: #555;">Staff</th>
-                    <th style="padding: 0.75rem; text-align:left; color: #555;">Date</th>
-                    <th style="padding: 0.75rem; text-align:left; color: #555;">Time</th>
-                    <th style="padding: 0.75rem; text-align:left; color: #555;">Status</th>
-                    <th style="padding: 0.75rem; text-align:left; color: #555;">Reason</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for appointment in appointments %}
-                <tr style="background: #fdfdfd; border-radius: 8px;">
-                    <td style="padding: 0.75rem; font-weight: 200;">{{ appointment.person_name }}</td>
-                    <td style="padding: 0.75rem;">{{ appointment.appointment_date }}</td>
-                    <td style="padding: 0.75rem;">{{ appointment.appointment_time }}</td>
-                    <td style="padding: 0.75rem;">
-                        {% if appointment.status == 'pending' %}
-                            <span class="badge badge-secondary" style="background:#adb5bd; color:#fff; padding:0.4em 0.8em; border-radius:1em; font-size:0.95em;">
-                                <span style="margin-right:0.4em;">⏳</span>Pending
-                            </span>
-                        {% elif appointment.status == 'accepted' %}
-                            <span class="badge badge-success" style="background:#51cf66; color:#fff; padding:0.4em 0.8em; border-radius:1em; font-size:0.95em;">
-                                <span style="margin-right:0.4em;">✔️</span>Accepted
-                            </span>
-                        {% elif appointment.status == 'rescheduled' %}
-                            <span class="badge badge-warning" style="background:#ffd43b; color:#333; padding:0.4em 0.8em; border-radius:1em; font-size:0.95em;">
-                                <span style="margin-right:0.4em;">🔄</span>Rescheduled
-                            </span>
-                        {% elif appointment.status == 'canceled' %}
-                            <span class="badge badge-danger" style="background:#fa5252; color:#fff; padding:0.4em 0.8em; border-radius:1em; font-size:0.95em;">
-                                <span style="margin-right:0.4em;">❌</span>Canceled
-                            </span>
-                        {% endif %}
-                    </td>
-                    <td style="padding: 0.75rem; color: #888;">
-                        {% if appointment.status in ['rescheduled', 'canceled'] %}
-                            {{ appointment.staff_reason }}
-                        {% else %}
-                            <span style="color:#ccc;">—</span>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<div class="appointments-container">
+    <h2 class="appointments-title">Your Appointments</h2>
+    <div class="card appointments-card">
+        <div class="appointments-table-wrapper">
+            <table class="appointments-table">
+                <thead>
+                    <tr>
+                        <th>Staff</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.person_name }}</td>
+                        <td>{{ appointment.appointment_date }}</td>
+                        <td>{{ appointment.appointment_time }}</td>
+                        <td>
+                            {% if appointment.status == 'pending' %}
+                                <span class="badge badge-secondary">
+                                    <span class="badge-icon">⏳</span>Pending
+                                </span>
+                            {% elif appointment.status == 'accepted' %}
+                                <span class="badge badge-success">
+                                    <span class="badge-icon">✔️</span>Accepted
+                                </span>
+                            {% elif appointment.status == 'rescheduled' %}
+                                <span class="badge badge-warning">
+                                    <span class="badge-icon">🔄</span>Rescheduled
+                                </span>
+                            {% elif appointment.status == 'canceled' %}
+                                <span class="badge badge-danger">
+                                    <span class="badge-icon">❌</span>Canceled
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="appointments-reason">
+                            {% if appointment.status in ['rescheduled', 'canceled'] %}
+                                {{ appointment.staff_reason }}
+                            {% else %}
+                                <span class="appointments-reason-empty">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% if appointments|length == 0 %}
-            <div style="text-align:center; color:#888; margin-top:2rem;">
-                <span style="font-size:2rem;">📅</span>
-                <div style="margin-top:0.5rem;">No appointments found.</div>
+            <div class="appointments-empty">
+                <span class="appointments-empty-icon">📅</span>
+                <div class="appointments-empty-text">No appointments found.</div>
             </div>
         {% endif %}
     </div>
