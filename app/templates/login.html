@@ -5,7 +5,11 @@
     <title>Login</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
+        body {
+            background-color: white;
+            font-family: Poppins, sans-serif;
+            height: 100%;
+        }
         form {
             height: 450px;
             width: 400px;
@@ -21,16 +25,13 @@
         }
 
         form * {
-            right:7px;
             font-size: 12px;
             font-weight: 200;
             color: black;
             letter-spacing: 0.5px;
             outline: none;
             border: none;
-            margin:10px;
             position: relative;
-            bottom: 10%;
         }
 
         form h1 {
@@ -41,12 +42,12 @@
 
         label {
             display: block;
-            margin-top: 30px;
+            margin-top: 20px;
             font-size: 16px;
             font-weight: 200;
         }
 
-        form input {
+        input, select {
             display: block;
             height: 50px;
             width: 95%;
@@ -60,6 +61,19 @@
 
         ::placeholder {
             color: gray;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #e6c2b4;
+            color: white;
+            padding: 10px 0;
+            font-weight: 500;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 2px solid #e6c2b4;
+            cursor: pointer;
         }
 
         .submit {
@@ -77,34 +91,13 @@
         .submit:hover{
             color: black;               
         }
-
-        body {
-            background-color: white;
-            background-size: cover;
-            font-family: Poppins, sans-serif;
-            height:100%;
-        }
-
-        .background {
-            width: 430px;
-            height: 520px;
-            position: absolute;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            top: 50%;
-        }
-
-        .background .shape {
-            height: 200px;
-            width: 200px;
-            position: absolute;
-            border-radius: 50%;
-        }
         .signup-link {
             position: static;
             text-align: center;
             font-size: 14px;
+            margin-bottom: -15px;
         }
+        
         .signup-link a {
             color: #1845ad;
             text-decoration: underline;
@@ -126,6 +119,7 @@
             font-family: Poppins, sans-serif;
             text-decoration: none;
             cursor:pointer;
+
         }
   
         .login-with-google-btn :active {
