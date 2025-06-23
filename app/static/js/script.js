@@ -62,7 +62,7 @@ $divAppointmentContainer = $('#divAppointmentContainer'),
                     } else if (status === 'rescheduled') {
                         html += `<span class="badge badge-warning"><h2>Rescheduled</h2></span> <span><p>Reason: ${staff_reason}</p></span>`;
                     } else if (status === 'canceled') {
-                        html += `<span class="badge badge-success"><h2>Canceled</h2></span><span><br><p>Reason: ${staff_reason}</p></span>`;
+                        html += `<span class="badge badge-danger"><h2>Canceled</h2></span><span><br><p>Reason: ${staff_reason}</p></span>`;
                     } else if (status === 'accepted') {
                         html += `<span class="badge badge-success"><h2>Accepted</h2></span>`;
                     }
