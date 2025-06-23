@@ -286,7 +286,8 @@ def register_routes(app):
         if current_user.role != 'client':
             return redirect(url_for('staff_dashboard'))
         
-        appointments = Appointment.query.filter_by(client_id=current_user.id, status='pending').all()
+        # Show all appointments for the current client, not just pending
+        appointments = Appointment.query.filter_by(client_id=current_user.id).all()
         client_username = current_user.username
 
         return render_template('client_dashboard.html', appointments=appointments, client_username=client_username)
